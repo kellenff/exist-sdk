@@ -1,6 +1,10 @@
-module github.com/kellen/exist-sdk
+module github.com/kellen/exist-sdk/examples
 
 go 1.24.0
+
+require github.com/kellen/exist-sdk v0.0.0
+
+replace github.com/kellen/exist-sdk => ../../
 
 require github.com/oapi-codegen/runtime v1.4.0
 
