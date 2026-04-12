@@ -20,6 +20,12 @@ go generate ./pkg/existapi/
 
 Requires Go 1.24+ (see `go.mod`). The generator is pinned in `pkg/existapi/generate.go` via `go run ...@v2.6.0`.
 
+Run tests:
+
+```bash
+go test ./...
+```
+
 ## Pull requests
 
 - Keep changes focused and easy to review.

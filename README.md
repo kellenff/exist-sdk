@@ -8,8 +8,8 @@ A future SDK for building apps and scripts on top of [Exist](https://exist.io/) 
 
 ## Current state
 
-- **Go:** root module `github.com/kellen/exist-sdk` (change `go.mod` if you publish under another path). Package [`pkg/existapi`](pkg/existapi/) holds **oapi-codegen** types and client generated from [`docs/exist-api-openapi.yaml`](docs/exist-api-openapi.yaml). Regenerate with `go generate ./pkg/existapi/`.
-- No supported public API yet beyond the raw generated client; no stability guarantees for generated code between regenerations.
+- **Go:** root module `github.com/kellen/exist-sdk` (change `go.mod` if you publish under another path). Prefer [`pkg/exist`](pkg/exist/) for app code (thin wrapper: auth, defaults, `Profile`). Low-level generated types and client are in [`pkg/existapi`](pkg/existapi/) from [`docs/exist-api-openapi.yaml`](docs/exist-api-openapi.yaml) — regenerate with `go generate ./pkg/existapi/`.
+- Pre-alpha: no stability guarantees for generated or wrapper APIs between releases.
 
 ## Planned direction (non-binding)
 
