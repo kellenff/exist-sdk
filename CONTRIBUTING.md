@@ -10,6 +10,16 @@ Open an issue (or draft PR) to describe the problem and proposed shape of the ch
 
 Design specs and implementation plans under `docs/superpowers/` are **intentionally excluded** from version control in this workspace (see `.git/info/exclude`). Do not commit them or force-add with `git add -f`.
 
+## Go / OpenAPI client
+
+After editing `docs/exist-api-openapi.yaml`, regenerate:
+
+```bash
+go generate ./pkg/existapi/
+```
+
+Requires Go 1.24+ (see `go.mod`). The generator is pinned in `pkg/existapi/generate.go` via `go run ...@v2.6.0`.
+
 ## Pull requests
 
 - Keep changes focused and easy to review.

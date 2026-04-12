@@ -1,0 +1,7 @@
+# oapi-codegen v2 config — https://github.com/oapi-codegen/oapi-codegen
+# Regenerate from repo root: go generate ./pkg/existapi/...
+package: existapi
+generate:
+  models: true
+  client: true
+output: api.gen.go

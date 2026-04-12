@@ -10,4 +10,5 @@ once published versions exist.
 
 ### Added
 
+- Go module with `pkg/existapi` generated via **oapi-codegen v2.6.0** from `docs/exist-api-openapi.yaml` (`go generate ./pkg/existapi/`).
 - Public repository baseline: README, `UNLICENSE`, contributing guide, changelog, and generic `.gitignore`.
