@@ -2,6 +2,8 @@
 
 Pre-alpha. Small helpers for Exist OAuth2: build **`/oauth2/authorize`** URLs, **`POST /oauth2/access_token`** (**authorization_code** + **refresh_token**).
 
+Placeholders like `<client_id>`, `<client_secret>`, and `<read-token>` in this README are examples only, not real credentials.
+
 Not included: local callback HTTP server, browser automation, token storage.
 
 ## Flow
@@ -13,7 +15,7 @@ Not included: local callback HTTP server, browser automation, token storage.
 
 **PKCE:** **`GeneratePKCE()`** exists for RFC 7636 **`S256`** material; **`BuildAuthorizeURL`** currently returns an error if **`PKCE != nil`** until Exist docs and this repo's OpenAPI document authorize-query PKCE.
 
-Security: do not log tokens or **`client_secret`**. Use HTTPS **`redirect_uri`** in production (Exist requirement).
+Security: do not log tokens or **`client_secret`**. Store **`client_secret`** only on trusted servers. Use HTTPS **`redirect_uri`** in production (Exist requirement).
 
-- [Exist developer docs](https://developer.exist.io/)
+- [Exist developer documentation](https://developer.exist.io/)
 - [Important values](https://developer.exist.io/reference/important_values/)
