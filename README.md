@@ -8,7 +8,7 @@ A future SDK for building apps and scripts on top of [Exist](https://exist.io/) 
 
 ## Current state
 
-- **Go:** root module `github.com/kellen/exist-sdk` (change `go.mod` if you publish under another path). Prefer [`pkg/exist`](pkg/exist/) for app code (thin wrapper: auth, defaults, `Profile`). Low-level generated types and client are in [`pkg/existapi`](pkg/existapi/) from [`docs/exist-api-openapi.yaml`](docs/exist-api-openapi.yaml) — regenerate with `go generate ./pkg/existapi/`.
+- **Go:** root module `github.com/kellen/exist-sdk` (change `go.mod` if you publish under another path). Prefer [`pkg/exist`](pkg/exist/) for app code (thin wrapper: auth, defaults, `Profile`). OAuth2 authorize URL and token exchange helpers live in [`pkg/exist/oauth`](pkg/exist/oauth/) (pre-alpha; no callback server — see package README). Low-level generated types and client are in [`pkg/existapi`](pkg/existapi/) from [`docs/exist-api-openapi.yaml`](docs/exist-api-openapi.yaml) — regenerate with `go generate ./pkg/existapi/`.
 - Pre-alpha: no stability guarantees for generated or wrapper APIs between releases.
 
 ## Planned direction (non-binding)
