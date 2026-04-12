@@ -1,25 +1,30 @@
 # Exist SDK
 
-**Pre-alpha — not usable yet.** This repository does not ship a working Exist API client today.
+**Pre-alpha.** Go module for the [Exist](https://exist.io/) HTTP API. The supported **hand-written** surface is intentionally small; types and HTTP operations also live in generated [`pkg/existapi`](pkg/existapi/).
 
-## What this is for
+## What you can use today
 
-A future SDK for building apps and scripts on top of [Exist](https://exist.io/) using its HTTP API.
+- **[`pkg/exist`](pkg/exist/)** — `NewClient` with `WithSimpleToken` or `WithBearerToken` (defaults: base URL `https://exist.io`, HTTP client timeout **60s** unless overridden), **`Profile`** for the authenticated account profile, and **`ClientWithResponses()`** to call any generated **`existapi`** operation.
+- **[`pkg/exist/oauth`](pkg/exist/oauth/)** (optional) — `BuildAuthorizeURL`, **`TokenClient`** with **`ExchangeCode`** / **`Refresh`**, **`GeneratePKCE`**. No embedded OAuth callback server.
 
-## Current state
+## Limitations
 
-- **Go:** root module `github.com/kellen/exist-sdk` (change `go.mod` if you publish under another path). Prefer [`pkg/exist`](pkg/exist/) for app code (thin wrapper: auth, defaults, `Profile`). OAuth2 authorize URL and token exchange helpers live in [`pkg/exist/oauth`](pkg/exist/oauth/) (pre-alpha; no callback server — see package README). Low-level generated types and client are in [`pkg/existapi`](pkg/existapi/) from [`docs/exist-api-openapi.yaml`](docs/exist-api-openapi.yaml) — regenerate with `go generate ./pkg/existapi/`.
-- Pre-alpha: no stability guarantees for generated or wrapper APIs between releases.
+- **Stability:** Wrappers and generated code may change between commits; there is **no** published semver/registry story in this README until the project announces one elsewhere.
+- **Scope:** No automatic retries or **429** handling in **`exist.Client`** today.
+- **OAuth:** **`BuildAuthorizeURL`** returns an error if **`PKCE != nil`** until Exist’s docs and this repo’s OpenAPI describe PKCE on the authorize URL ([`pkg/exist/oauth/README.md`](pkg/exist/oauth/README.md)).
 
-## Planned direction (non-binding)
+## Install
 
-- Typed or documented request helpers, auth handling, and error mapping aligned with Exist’s API.
-- Clear versioning once code lands.
+Requires **Go 1.24+** (see root **`go.mod`**). From your module:
 
-## API reference
+```bash
+go get github.com/kellen/exist-sdk
+```
 
-- [Exist developer docs](https://developer.exist.io/reference/important_values/)
+**Next step:** [`pkg/exist/README.md`](pkg/exist/README.md) for a minimal **`Profile`** example and the OpenAPI regen command.
 
-## Contributing
+## Links
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+- [Exist developer documentation](https://developer.exist.io/)
+- [Important values](https://developer.exist.io/reference/important_values/)
+- [Contributing](CONTRIBUTING.md)
