@@ -26,12 +26,38 @@ Run tests:
 go test ./...
 ```
 
+## Continuous integration
+
+[GitHub Actions](.github/workflows/ci.yml) runs on pushes and pull requests to **`main`**:
+
+```bash
+go test ./...
+go vet ./...
+```
+
+Run the same commands locally before opening a PR so CI matches your machine.
+
 ## Pull requests
 
 - Keep changes focused and easy to review.
 - Update docs when behavior or public surface changes.
 - Match existing tone: accurate, not marketing-heavy.
+- Ensure CI passes (same commands as in [Continuous integration](#continuous-integration)).
 
 ## Issues
 
 Bug reports, questions, and proposals are welcome. Include what you tried, what you expected, and what happened instead when reporting problems.
+
+## Releases (maintainers)
+
+Tags are **optional** until you publish a release. The first annotated tag on this track is intended to be **`v0.1.0`** (semver **v0** — breaking changes may still occur; see `README.md`).
+
+```bash
+git checkout main
+git pull
+# After updating CHANGELOG.md for the release:
+git tag -a v0.1.0 -m "v0.1.0"
+git push origin v0.1.0
+```
+
+Consumers: `go get github.com/kellen/exist-sdk@v0.1.0` (after the tag exists on the default remote).
