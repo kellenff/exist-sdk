@@ -146,7 +146,7 @@ func (c *TokenClient) postToken(ctx context.Context, form url.Values) (*Token, e
 	var tok Token
 	if err := json.Unmarshal(body, &tok); err != nil {
 		return nil, &HTTPError{
-			StatusCode:  resp.StatusCode,
+			StatusCode:  0,
 			Message:     "invalid token response json",
 			BodyPreview: truncateBodyPreview(body),
 		}

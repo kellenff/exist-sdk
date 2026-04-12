@@ -8,6 +8,7 @@ import (
 const bodyPreviewMaxRunes = 512
 
 // HTTPError describes a non-2xx or malformed token-endpoint response for errors.As.
+// StatusCode is 0 when the failure is not the HTTP status line (e.g. JSON parse error on a 200 body).
 type HTTPError struct {
 	StatusCode  int
 	Message     string

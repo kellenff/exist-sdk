@@ -20,11 +20,17 @@ func TestExchangeCode_OK(t *testing.T) {
 			t.Fatalf("Content-Type = %q", ct)
 		}
 		b, _ := io.ReadAll(r.Body)
-		if !strings.Contains(string(b), "grant_type=authorization_code") {
-			t.Fatalf("body = %q", string(b))
-		}
-		if !strings.Contains(string(b), "code=abc") {
-			t.Fatalf("body = %q", string(b))
+		sb := string(b)
+		for _, want := range []string{
+			"grant_type=authorization_code",
+			"code=abc",
+			"client_id=id",
+			"client_secret=secret",
+			"redirect_uri=",
+		} {
+			if !strings.Contains(sb, want) {
+				t.Fatalf("body missing %q: %q", want, sb)
+			}
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
@@ -48,6 +54,38 @@ func TestExchangeCode_OK(t *testing.T) {
 	}
 	if tok.AccessToken != "at" || tok.RefreshToken != "rt" {
 		t.Fatalf("token = %+v", tok)
+	}
+}
+
+func TestExchangeCode_InvalidJSON_AsHTTPError(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/oauth2/access_token", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`not json`))
+	})
+	srv := httptest.NewServer(mux)
+	t.Cleanup(srv.Close)
+
+	tc, err := NewTokenClient(WithTokenBaseURL(srv.URL))
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = tc.ExchangeCode(context.Background(), ExchangeCodeParams{
+		Code:         "x",
+		RedirectURI:  "https://app.example/cb",
+		ClientID:     "id",
+		ClientSecret: "secret",
+	})
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	var he *HTTPError
+	if !errors.As(err, &he) {
+		t.Fatalf("want *HTTPError, got %T", err)
+	}
+	if he.StatusCode != 0 {
+		t.Fatalf("status = %d, want 0 for parse failure", he.StatusCode)
 	}
 }
 
