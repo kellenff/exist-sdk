@@ -11,9 +11,11 @@ once published versions exist.
 ### Changed
 
 - User-facing README pass: root + `pkg/exist` + `pkg/exist/oauth` onboarding, accurate “what works today” vs limitations, no API behavior change.
+- Contributor docs: CI parity in `CONTRIBUTING.md`, versioning notes in `README.md`.
 
 ### Added
 
+- GitHub Actions workflow on `main` running `go test ./...` and `go vet ./...`.
 - **`pkg/exist/oauth`**: `TokenClient` (`ExchangeCode`, `Refresh`), `BuildAuthorizeURL`, `GeneratePKCE` (S256); PKCE on authorize URL returns an error until documented in Exist OAuth docs and the OpenAPI aggregate.
 - Hand-written **`pkg/exist`** wrapper: `Client`, `WithSimpleToken` / `WithBearerToken`, `Profile`, escape hatch to generated `ClientWithResponses`; `httptest` coverage.
 - Go module with `pkg/existapi` generated via **oapi-codegen v2.6.0** from `docs/exist-api-openapi.yaml` (`go generate ./pkg/existapi/`).

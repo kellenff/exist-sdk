@@ -9,7 +9,7 @@
 
 ## Limitations
 
-- **Stability:** Wrappers and generated code may change between commits; there is **no** published semver/registry story in this README until the project announces one elsewhere.
+- **Stability:** Pre-alpha; **v0.x** tags may be used for iterations (breaking changes still possible under [semver v0](https://semver.org/spec/v2.0.0.html)). Prefer pinning a version or commit once tags exist; see **Versioning** below.
 - **Scope:** No automatic retries or **429** handling in **`exist.Client`** today.
 - **OAuth:** **`BuildAuthorizeURL`** returns an error if **`PKCE != nil`** until Exist’s docs and this repo’s OpenAPI describe PKCE on the authorize URL ([`pkg/exist/oauth/README.md`](pkg/exist/oauth/README.md)).
 
@@ -22,6 +22,16 @@ go get github.com/kellen/exist-sdk
 ```
 
 **Next step:** [`pkg/exist/README.md`](pkg/exist/README.md) for a minimal **`Profile`** example and the OpenAPI regen command.
+
+## Versioning
+
+The module uses [semantic versioning](https://semver.org/) once tags exist. **`v0.*`** releases may include breaking API changes. Pin a tag when available:
+
+```bash
+go get github.com/kellen/exist-sdk@v0.1.0
+```
+
+Before the first tag, `go get` resolves a [pseudo-version](https://go.dev/doc/modules/version-numbers) from a commit. Maintainer tagging steps: [Contributing — Releases (maintainers)](CONTRIBUTING.md#releases-maintainers).
 
 ## Links
 
