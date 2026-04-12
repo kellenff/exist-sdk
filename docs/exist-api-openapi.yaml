@@ -41,6 +41,8 @@ tags:
     description: Weekly goal / median values by weekday
   - name: Correlations
     description: Statistical relationships between attributes
+  - name: Insights
+    description: Interesting events found within the user's data
   - name: OAuth2
     description: Browser redirect and token exchange (not JSON API base)
 
@@ -295,6 +297,45 @@ paths:
                 $ref: "#/components/schemas/Correlation"
         "404":
           description: No correlation for that pair
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/insights/:
+    get:
+      tags: [Insights]
+      summary: List insights (paged)
+      description: Returns a paged list of the authenticated user's insights.
+      operationId: getInsights
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Page"
+        - name: date_min
+          in: query
+          description: Oldest date (inclusive) of results to be returned (YYYY-mm-dd).
+          schema:
+            type: string
+            format: date
+        - name: date_max
+          in: query
+          description: Most recent date (inclusive) of results to be returned (YYYY-mm-dd).
+          schema:
+            type: string
+            format: date
+        - name: priority
+          in: query
+          description: Filter by insight priority (1=today, 4=last month).
+          schema:
+            type: integer
+            enum: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Paged insights
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedInsights"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "429":
@@ -726,6 +767,68 @@ components:
           items:
             $ref: "#/components/schemas/Correlation"
 
+    InsightTypeAttribute:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        group:
+          $ref: "#/components/schemas/AttributeGroup"
+        priority:
+          type: integer
+        value_type:
+          type: integer
+        value_type_description:
+          type: string
+
+    InsightType:
+      type: object
+      properties:
+        name:
+          type: string
+        period:
+          type: integer
+        priority:
+          type: integer
+        attribute:
+          $ref: "#/components/schemas/InsightTypeAttribute"
+
+    Insight:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+        target_date:
+          type: string
+          format: date
+        type:
+          $ref: "#/components/schemas/InsightType"
+        html:
+          type: string
+        text:
+          type: string
+      additionalProperties: true
+
+    PagedInsights:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          nullable: true
+          format: uri
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Insight"
+
     AcquireOrReleaseItem:
       type: object
       properties:
@@ -745,6 +848,7 @@ components:
           type: string
         value_type:
           type: integer
+          enum: [0, 1, 2, 3, 4, 5, 7, 8]
           description: |
             0 quantity, 1 decimal, 2 string, 3 duration minutes, 4 time from midnight,
             5 percentage, 7 boolean, 8 scale — see object types reference (6 reserved).
@@ -793,6 +897,8 @@ x-exist-sources:
       note: acquire, release, create, update, increment
     - url: https://developer.exist.io/reference/object_types/
       note: User profile shape, attribute & correlation examples, value types
+    - url: https://developer.exist.io/reference/insights/
+      note: Insights endpoint and parameters
 
 x-exist-oauth-scopes:
   description: |
