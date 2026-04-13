@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "noImplicitAny": "warn",
+    "noUnusedLocals": "warn",
+    "noUnusedParameters": "warn"
+  }
+}

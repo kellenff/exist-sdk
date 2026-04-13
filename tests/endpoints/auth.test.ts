@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { exchangeSimpleToken } from "../../src/endpoints/auth.js";
-import { createClient, type ExistClient } from "../../src/client.js";
+import { createClient } from "../../src/client.js";
 
 describe("exchangeSimpleToken", () => {
   it("calls POST /auth/simple-token/ with credentials", async () => {

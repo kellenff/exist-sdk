@@ -10,11 +10,18 @@
     "generate-types": "tsx scripts/generate-types.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "prepare": "husky",
+    "lint": "oxlint",
+    "format:check": "oxfmt --check",
+    "precommit": "yarn lint && yarn format:check"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
+    "husky": "^9.1.7",
     "openapi-typescript": "^7.13.0",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.59.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
     "vitest": "^4.1.4"

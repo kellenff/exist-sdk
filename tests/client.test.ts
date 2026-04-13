@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { createClient, type ExistClient } from "../src/client.js";
+import { createClient } from "../src/client.js";
 
 describe("createClient", () => {
   it("injects Authorization header with Token prefix", async () => {
