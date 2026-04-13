@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { getAttributesWithValues } from "../../src/endpoints/attributes";
-import { createClient } from "../../src/client";
+import { getAttributesWithValues } from "../../src/endpoints/attributes.js";
+import { createClient } from "../../src/client.js";
 
 describe("getAttributesWithValues", () => {
   it("calls GET /attributes/with-values/ with default pagination", async () => {

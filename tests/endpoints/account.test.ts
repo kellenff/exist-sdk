@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { getProfile } from "../../src/endpoints/account";
-import { createClient } from "../../src/client";
+import { getProfile } from "../../src/endpoints/account.js";
+import { createClient } from "../../src/client.js";
 
 describe("getProfile", () => {
   it("calls GET /accounts/profile/", async () => {

@@ -1,5 +1,5 @@
-import type { ExistClient } from "../client";
-import type { PagedAttributesWithValues } from "../types";
+import type { ExistClient } from "../client.js";
+import type { PagedAttributesWithValues } from "../types.js";
 
 interface GetAttributesParams {
   page?: number;

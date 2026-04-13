@@ -1,4 +1,4 @@
-import type { ExistClient } from "../client";
+import type { ExistClient } from "../client.js";
 
 interface SimpleTokenRequest {
   username: string;

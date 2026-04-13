@@ -67,6 +67,7 @@ export function createClient(opts: ClientOptions): ExistClient {
 
   return {
     get: (path) => request(path, { method: "GET" }),
-    post: (path, { body } = {}) => request(path, { method: "POST", body }),
+    post: (path, { body } = {}) =>
+      request(path, { method: "POST", body: body as BodyInit }),
   };
 }
