@@ -6,3 +6,7 @@
 *.swp
 *.swo
 *~
+node_modules/
+.pnp.cjs
+.pnp.loader.mjs
+.yarn/
