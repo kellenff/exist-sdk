@@ -303,16 +303,9 @@ export interface ExistClient {
 }
 
 export function createClient(opts: ClientOptions): ExistClient {
-  const {
-    token,
-    baseUrl = "https://exist.io/api/2/",
-    fetch: fetchImpl = fetch,
-  } = opts;
+  const { token, baseUrl = "https://exist.io/api/2/", fetch: fetchImpl = fetch } = opts;
 
-  async function request(
-    path: string,
-    options: RequestInit = {},
-  ): Promise<unknown> {
+  async function request(path: string, options: RequestInit = {}): Promise<unknown> {
     const url = `${baseUrl.replace(/\/$/, "")}${path}`;
     const headers: Record<string, string> = {
       Authorization: `Token ${token}`,
@@ -604,10 +597,7 @@ interface GetAttributesParams {
 function buildQuery(params: GetAttributesParams): string {
   const entries = Object.entries(params).filter(([, v]) => v !== undefined);
   if (entries.length === 0) return "";
-  return (
-    "?" +
-    entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&")
-  );
+  return "?" + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
 }
 
 export async function getAttributesWithValues(
@@ -615,9 +605,7 @@ export async function getAttributesWithValues(
   params: GetAttributesParams = {},
 ): Promise<PagedAttributesWithValues> {
   const qs = buildQuery(params);
-  return client.get(
-    `/attributes/with-values/${qs}`,
-  ) as Promise<PagedAttributesWithValues>;
+  return client.get(`/attributes/with-values/${qs}`) as Promise<PagedAttributesWithValues>;
 }
 ```
 
@@ -648,11 +636,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ```typescript
 export { createClient } from "./client";
 export type { ExistClient, ClientOptions, ExistError } from "./client";
-export type {
-  UserProfile,
-  AttributeWithValues,
-  PagedAttributesWithValues,
-} from "./types";
+export type { UserProfile, AttributeWithValues, PagedAttributesWithValues } from "./types";
 export { getProfile } from "./endpoints/account";
 export { getAttributesWithValues } from "./endpoints/attributes";
 export { exchangeSimpleToken } from "./endpoints/auth";
