@@ -17,16 +17,9 @@ export interface ExistClient {
 }
 
 export function createClient(opts: ClientOptions): ExistClient {
-  const {
-    token,
-    baseUrl = "https://exist.io/api/2/",
-    fetch: fetchImpl = fetch,
-  } = opts;
+  const { token, baseUrl = "https://exist.io/api/2/", fetch: fetchImpl = fetch } = opts;
 
-  async function request(
-    path: string,
-    options: RequestInit = {},
-  ): Promise<unknown> {
+  async function request(path: string, options: RequestInit = {}): Promise<unknown> {
     const url = `${baseUrl.replace(/\/$/, "")}${path}`;
     const headers: Record<string, string> = {
       Authorization: `Token ${token}`,
@@ -67,7 +60,6 @@ export function createClient(opts: ClientOptions): ExistClient {
 
   return {
     get: (path) => request(path, { method: "GET" }),
-    post: (path, { body } = {}) =>
-      request(path, { method: "POST", body: body as BodyInit }),
+    post: (path, { body } = {}) => request(path, { method: "POST", body: body as BodyInit }),
   };
 }

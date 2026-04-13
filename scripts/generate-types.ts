@@ -7,13 +7,9 @@ const specPath = resolve(__dirname, "../docs/exist-api-openapi.yaml");
 const outputPath = resolve(__dirname, "../src/types.ts");
 
 await new Promise((resolve, reject) => {
-  const child = spawn(
-    "npx",
-    ["openapi-typescript", specPath, "--output", outputPath],
-    {
-      stdio: "inherit",
-    },
-  );
+  const child = spawn("npx", ["openapi-typescript", specPath, "--output", outputPath], {
+    stdio: "inherit",
+  });
   child.on("error", reject);
   child.on("close", (code) => {
     if (code === 0) {

@@ -13,10 +13,7 @@ interface GetAttributesParams {
 function buildQuery(params: GetAttributesParams): string {
   const entries = Object.entries(params).filter(([, v]) => v !== undefined);
   if (entries.length === 0) return "";
-  return (
-    "?" +
-    entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&")
-  );
+  return "?" + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
 }
 
 export async function getAttributesWithValues(
@@ -24,7 +21,5 @@ export async function getAttributesWithValues(
   params: GetAttributesParams = {},
 ): Promise<PagedAttributesWithValues> {
   const qs = buildQuery(params);
-  return client.get(
-    `/attributes/with-values/${qs}`,
-  ) as Promise<PagedAttributesWithValues>;
+  return client.get(`/attributes/with-values/${qs}`) as Promise<PagedAttributesWithValues>;
 }
