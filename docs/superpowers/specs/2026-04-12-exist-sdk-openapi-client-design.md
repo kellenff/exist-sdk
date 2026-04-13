@@ -156,11 +156,7 @@ No runtime dependencies. `fetch` is provided by the host runtime.
 ```typescript
 export { createClient } from "./client";
 export type { ExistClient, ClientOptions } from "./client";
-export type {
-  UserProfile,
-  AttributeWithValues,
-  PagedAttributesWithValues,
-} from "./types";
+export type { UserProfile, AttributeWithValues, PagedAttributesWithValues } from "./types";
 export { getProfile } from "./endpoints/account";
 export { getAttributesWithValues } from "./endpoints/attributes";
 export { exchangeSimpleToken } from "./endpoints/auth";
