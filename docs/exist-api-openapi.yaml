@@ -1,0 +1,802 @@
+openapi: 3.0.3
+info:
+  title: Exist.io HTTP API (unofficial aggregate)
+  version: "2.0.0"
+  description: |
+    OpenAPI description derived from Exist developer documentation (see **x-exist-sources**).
+    This file is **not** published by Hello Code; validate against live API before relying on it.
+
+    ### Important values (from official docs)
+
+    | Name | Value |
+    |------|-------|
+    | API base URL | `https://exist.io/api/2/` |
+    | OAuth2 base URL | `https://exist.io/oauth2/` |
+    | Response type | `application/json` |
+    | Rate limiting | 300 requests/hr per user token |
+    | POST body | `application/x-www-form-urlencoded`, `multipart/form-data`, or `application/json` |
+    | OAuth2 auth | `Authorization: Bearer <token>` |
+    | Simple token auth | `Authorization: Token <token>` |
+
+    Simple token auth is read-oriented; OAuth2 Bearer tokens are used for read/write clients.
+
+  contact:
+    url: https://developer.exist.io/
+  license:
+    name: Unlicense
+    url: https://unlicense.org/
+
+servers:
+  - url: https://exist.io
+    description: Exist production
+
+tags:
+  - name: Authentication
+    description: Token acquisition and OAuth2
+  - name: Account
+    description: User profile
+  - name: Attributes
+    description: Read and write attribute definitions and values
+  - name: Averages
+    description: Weekly goal / median values by weekday
+  - name: Correlations
+    description: Statistical relationships between attributes
+  - name: OAuth2
+    description: Browser redirect and token exchange (not JSON API base)
+
+paths:
+  /api/2/auth/simple-token/:
+    post:
+      tags: [Authentication]
+      summary: Obtain a simple (read) API token
+      description: |
+        Exchange `username` and `password` for a long-lived `token`. Use `Authorization: Token <token>` on API v2.
+        Official tutorial uses `POST https://exist.io/api/2/auth/simple-token/`. Older copy on the important-values page referenced `/api/1/`; prefer v2.
+      operationId: authSimpleToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Token issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimpleTokenResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /oauth2/authorize:
+    get:
+      tags: [OAuth2]
+      summary: OAuth2 authorization (user browser step)
+      description: |
+        Redirect end user here. On success Exist redirects to `redirect_uri` with `?code=...`.
+        `redirect_uri` must be HTTPS in production (see official OAuth2 reference).
+      operationId: oauth2Authorize
+      security: []
+      parameters:
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [code]
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uri
+        - name: scope
+          in: query
+          required: true
+          description: Space-separated scopes (e.g. `media_write mood_read`).
+          schema:
+            type: string
+      responses:
+        "302":
+          description: Redirect to Exist login or to client redirect_uri with code or error
+
+  /oauth2/access_token:
+    post:
+      tags: [OAuth2]
+      summary: Exchange authorization code or refresh token
+      operationId: oauth2AccessToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/OAuthAuthorizationCodeRequest"
+                - $ref: "#/components/schemas/OAuthRefreshTokenRequest"
+      responses:
+        "200":
+          description: Token response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OAuthAccessTokenResponse"
+
+  /api/2/accounts/profile/:
+    get:
+      tags: [Account]
+      summary: Current user profile
+      description: Recommended check that a token works.
+      operationId: getAccountsProfile
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/attributes/with-values/:
+    get:
+      tags: [Attributes]
+      summary: List attributes with values (paged)
+      description: |
+        Typical query params include `page`, `limit`, `days`, `groups`, `date_max`, `attributes`
+        (filter to specific attribute names). Default pagination ~20 items per page.
+      operationId: getAttributesWithValues
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - name: days
+          in: query
+          description: Number of days of values ending at most recent (e.g. `7`).
+          schema:
+            type: integer
+            minimum: 1
+        - name: groups
+          in: query
+          description: Filter by group name (e.g. `custom` for tags).
+          schema:
+            type: string
+        - name: date_max
+          in: query
+          description: YYYY-MM-DD; values align to this date window per docs.
+          schema:
+            type: string
+            format: date
+        - name: attributes
+          in: query
+          description: Comma-separated or repeated attribute `name` filters (per tutorial usage).
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Paged attributes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedAttributesWithValues"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/averages/:
+    get:
+      tags: [Averages]
+      summary: List attribute averages / goals (paged)
+      description: |
+        Query params include `attributes` (filter), `include_historical` (truthy for history),
+        `page`, `limit` per official read-client guide.
+      operationId: getAverages
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - name: attributes
+          in: query
+          schema:
+            type: string
+        - name: include_historical
+          in: query
+          schema:
+            type: integer
+            enum: [0, 1]
+      responses:
+        "200":
+          description: Paged averages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedAverages"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/correlations/:
+    get:
+      tags: [Correlations]
+      summary: List correlations (paged)
+      operationId: getCorrelations
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Limit"
+        - name: confident
+          in: query
+          description: When `1`, filter to statistically confident correlations.
+          schema:
+            type: integer
+            enum: [0, 1]
+        - name: attribute
+          in: query
+          description: Filter correlations involving this attribute name.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Paged correlations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PagedCorrelations"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/correlations/combo/:
+    get:
+      tags: [Correlations]
+      summary: Single correlation for an attribute pair
+      operationId: getCorrelationCombo
+      parameters:
+        - name: attribute
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: attribute2
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: One correlation object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Correlation"
+        "404":
+          description: No correlation for that pair
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/attributes/acquire/:
+    post:
+      tags: [Attributes]
+      summary: Acquire ownership of attributes (write clients)
+      description: |
+        JSON array of objects with `template` or `name`, and `manual` boolean.
+        Requires Bearer token with appropriate write scope.
+      operationId: postAttributesAcquire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/AcquireOrReleaseItem"
+      responses:
+        "200":
+          description: Success
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/attributes/release/:
+    post:
+      tags: [Attributes]
+      summary: Release ownership of attributes
+      operationId: postAttributesRelease
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/AcquireOrReleaseItem"
+      responses:
+        "200":
+          description: Success
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/attributes/create/:
+    post:
+      tags: [Attributes]
+      summary: Create custom attributes
+      description: |
+        Array of objects with `label`, `value_type` (integer enum), `group`, `manual`.
+      operationId: postAttributesCreate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/CreateAttributeItem"
+      responses:
+        "200":
+          description: Created; body includes `success` array per tutorial
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/attributes/update/:
+    post:
+      tags: [Attributes]
+      summary: Set attribute totals for one or more dates
+      description: |
+        Array of `{ "name", "date" (yyyy-mm-dd), "value" }` objects.
+      operationId: postAttributesUpdate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/AttributeValueUpdate"
+      responses:
+        "200":
+          description: Updated
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /api/2/attributes/increment/:
+    post:
+      tags: [Attributes]
+      summary: Increment attribute values (often for "today")
+      description: |
+        Array of `{ "name", "value" }`; optional `date` omitted defaults to today per tutorial.
+      operationId: postAttributesIncrement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/AttributeIncrement"
+      responses:
+        "200":
+          description: Success; tutorial shows `success[0].current` for new total
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+    Limit:
+      name: limit
+      in: query
+      description: Page size (tutorial used up to 100).
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+
+  securitySchemes:
+    ExistSimpleToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |
+        Set the full header value to `Token <token>` (literal word `Token`, space, then token).
+        Swagger UI / codegen users should paste the entire string including `Token `.
+    ExistOAuth2:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth access token
+      description: "OAuth2 access token. Header format: Authorization: Bearer <access_token>"
+
+  responses:
+    Unauthorized:
+      description: Invalid or expired token
+    TooManyRequests:
+      description: Rate limited (300 requests per hour per user token)
+
+  schemas:
+    SimpleTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    OAuthAuthorizationCodeRequest:
+      type: object
+      required: [grant_type, code, client_id, client_secret, redirect_uri]
+      properties:
+        grant_type:
+          type: string
+          enum: [authorization_code]
+        code:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        redirect_uri:
+          type: string
+          format: uri
+
+    OAuthRefreshTokenRequest:
+      type: object
+      required: [grant_type, refresh_token, client_id, client_secret]
+      properties:
+        grant_type:
+          type: string
+          enum: [refresh_token]
+        refresh_token:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+
+    OAuthAccessTokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Seconds until access token expiry (docs cite ~1 year).
+        refresh_token:
+          type: string
+        scope:
+          type: string
+          description: Space-separated granted scopes
+
+    UserProfile:
+      type: object
+      description: Profile object (subset; see object types reference).
+      properties:
+        username:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        timezone:
+          type: string
+        local_time:
+          type: string
+          format: date-time
+        imperial_distance:
+          type: boolean
+        imperial_weight:
+          type: boolean
+        imperial_energy:
+          type: boolean
+        imperial_liquid:
+          type: boolean
+        imperial_temperature:
+          type: boolean
+        trial:
+          type: boolean
+        delinquent:
+          type: boolean
+      additionalProperties: true
+
+    AttributeGroup:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        priority:
+          type: integer
+
+    AttributeService:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+
+    AttributeValueDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        value:
+          nullable: true
+
+    AttributeWithValues:
+      type: object
+      properties:
+        group:
+          $ref: "#/components/schemas/AttributeGroup"
+        template:
+          type: string
+          nullable: true
+        name:
+          type: string
+        label:
+          type: string
+        priority:
+          type: integer
+        manual:
+          type: boolean
+        active:
+          type: boolean
+        value_type:
+          type: integer
+        value_type_description:
+          type: string
+        service:
+          $ref: "#/components/schemas/AttributeService"
+        values:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttributeValueDay"
+      additionalProperties: true
+
+    PagedAttributesWithValues:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          nullable: true
+          format: uri
+        previous:
+          type: string
+          nullable: true
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttributeWithValues"
+
+    AverageRow:
+      type: object
+      properties:
+        user_attribute:
+          type: string
+        date:
+          type: string
+          format: date
+        overall:
+          type: number
+        monday:
+          type: number
+        tuesday:
+          type: number
+        wednesday:
+          type: number
+        thursday:
+          type: number
+        friday:
+          type: number
+        saturday:
+          type: number
+        sunday:
+          type: number
+      additionalProperties: true
+
+    PagedAverages:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          nullable: true
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/AverageRow"
+
+    Correlation:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        period:
+          type: integer
+        offset:
+          type: integer
+        attribute:
+          type: string
+        attribute2:
+          type: string
+        value:
+          type: number
+        p:
+          type: number
+        percentage:
+          type: number
+        stars:
+          type: integer
+        second_person:
+          type: string
+        second_person_elements:
+          type: array
+          items:
+            type: string
+        attribute_category:
+          nullable: true
+        strength_description:
+          type: string
+        stars_description:
+          type: string
+        description:
+          nullable: true
+        occurrence:
+          nullable: true
+        rating:
+          nullable: true
+      additionalProperties: true
+
+    PagedCorrelations:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          nullable: true
+          format: uri
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Correlation"
+
+    AcquireOrReleaseItem:
+      type: object
+      properties:
+        template:
+          type: string
+        name:
+          type: string
+        manual:
+          type: boolean
+      description: Use `template` OR `name` per acquire rules in write-client guide.
+
+    CreateAttributeItem:
+      type: object
+      required: [label, value_type, group, manual]
+      properties:
+        label:
+          type: string
+        value_type:
+          type: integer
+          description: |
+            0 quantity, 1 decimal, 2 string, 3 duration minutes, 4 time from midnight,
+            5 percentage, 7 boolean, 8 scale — see object types reference (6 reserved).
+        group:
+          type: string
+        manual:
+          type: boolean
+
+    AttributeValueUpdate:
+      type: object
+      required: [name, date, value]
+      properties:
+        name:
+          type: string
+        date:
+          type: string
+          format: date
+        value: {}
+
+    AttributeIncrement:
+      type: object
+      required: [name, value]
+      properties:
+        name:
+          type: string
+        value: {}
+        date:
+          type: string
+          format: date
+          description: Optional; defaults to today when omitted.
+
+security:
+  - ExistSimpleToken: []
+  - ExistOAuth2: []
+
+x-exist-sources:
+  crawled_at: "2026-04-12"
+  pages:
+    - url: https://developer.exist.io/reference/important_values/
+      note: Base URLs, auth headers, rate limits, content types
+    - url: https://developer.exist.io/reference/authentication/oauth2/
+      note: Scopes, authorize URL, access_token exchange, refresh
+    - url: https://developer.exist.io/guide/read_client/
+      note: attributes/with-values, averages, correlations, combo
+    - url: https://developer.exist.io/guide/write_client/
+      note: acquire, release, create, update, increment
+    - url: https://developer.exist.io/reference/object_types/
+      note: User profile shape, attribute & correlation examples, value types
+
+x-exist-oauth-scopes:
+  description: |
+    Full scope table lives on the OAuth2 reference page. Read scopes end with `_read`,
+    write scopes with `_write`, covering activity, productivity, mood, sleep, workouts,
+    events, finance, food, health, location, media, social, weather, symptoms, medication,
+    custom tags, and manual attributes.
