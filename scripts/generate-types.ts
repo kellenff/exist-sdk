@@ -8,12 +8,13 @@ const outputPath = resolve(__dirname, "../src/types.ts");
 
 await new Promise((resolve, reject) => {
   const child = spawn(
-    "yarn",
+    "npx",
     ["openapi-typescript", specPath, "--output", outputPath],
     {
       stdio: "inherit",
     },
   );
+  child.on("error", reject);
   child.on("close", (code) => {
     if (code === 0) {
       resolve(code);
