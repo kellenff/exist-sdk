@@ -6,6 +6,9 @@
 !.yarn/sdks
 !.yarn/versions
 
+# Claude Code session directory
+.claude/
+
 ### VisualStudioCode template
 .vscode/*
 !.vscode/settings.json
