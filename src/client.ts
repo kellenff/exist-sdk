@@ -55,6 +55,10 @@ export function createClient(opts: ClientOptions): ExistClient {
         message,
         cause: data,
       };
+      // Extract code if present in response body
+      if (typeof data === "object" && data !== null && "code" in data) {
+        err.code = String((data as { code: unknown }).code);
+      }
       throw err;
     }
 
