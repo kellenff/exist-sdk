@@ -92,12 +92,12 @@ exist-sdk/
 - [ ] **Step 3: Write vitest.config.ts**
 
 ```typescript
-import { defineConfig } from "vitest/config";
+import {defineConfig} from 'vitest/config';
 
 export default defineConfig({
   test: {
-    include: ["tests/**/*.test.ts"],
-    environment: "node",
+    include: ['tests/**/*.test.ts'],
+    environment: 'node',
   },
 });
 ```
@@ -131,21 +131,21 @@ No test for code generation — this is a build-time script.
 - [ ] **Step 2: Write generate-types.ts**
 
 ```typescript
-import { generateTypes } from "openapi-typescript";
-import { writeFileSync, mkdirSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
+import {generateTypes} from 'openapi-typescript';
+import {writeFileSync, mkdirSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {dirname, resolve} from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const specPath = resolve(__dirname, "../docs/exist-api-openapi.yaml");
-const outputPath = resolve(__dirname, "../src/types.ts");
+const specPath = resolve(__dirname, '../docs/exist-api-openapi.yaml');
+const outputPath = resolve(__dirname, '../src/types.ts');
 
 const types = await generateTypes(specPath, {
   output: outputPath,
 });
 
 writeFileSync(outputPath, types);
-console.log("Generated src/types.ts");
+console.log('Generated src/types.ts');
 ```
 
 - [ ] **Step 3: Run script to verify it works**
@@ -176,61 +176,61 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 - [ ] **Step 1: Write the failing test**
 
 ```typescript
-import { describe, it, expect, vi } from "vitest";
-import { createClient, type ExistClient } from "../src/client";
+import {describe, it, expect, vi} from 'vitest';
+import {createClient, type ExistClient} from '../src/client';
 
-describe("createClient", () => {
-  it("injects Authorization header with Token prefix", async () => {
+describe('createClient', () => {
+  it('injects Authorization header with Token prefix', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve({ username: "test" }),
+      json: () => Promise.resolve({username: 'test'}),
     });
 
-    const client = createClient({ token: "abc123", fetch: mockFetch });
-    await client.get("/accounts/profile/");
+    const client = createClient({token: 'abc123', fetch: mockFetch});
+    await client.get('/accounts/profile/');
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/accounts/profile/",
+      'https://exist.io/api/2/accounts/profile/',
       expect.objectContaining({
         headers: expect.objectContaining({
-          Authorization: "Token abc123",
+          Authorization: 'Token abc123',
         }),
       }),
     );
   });
 
-  it("throws ExistError on non-2xx response", async () => {
+  it('throws ExistError on non-2xx response', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 401,
-      json: () => Promise.resolve({ message: "Invalid token" }),
+      json: () => Promise.resolve({message: 'Invalid token'}),
     });
 
-    const client = createClient({ token: "bad", fetch: mockFetch });
+    const client = createClient({token: 'bad', fetch: mockFetch});
 
-    await expect(client.get("/accounts/profile/")).rejects.toMatchObject({
+    await expect(client.get('/accounts/profile/')).rejects.toMatchObject({
       status: 401,
-      message: "Invalid token",
+      message: 'Invalid token',
     });
   });
 
-  it("throws ExistError on rate limit (429)", async () => {
+  it('throws ExistError on rate limit (429)', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 429,
-      json: () => Promise.resolve({ message: "Rate limited" }),
+      json: () => Promise.resolve({message: 'Rate limited'}),
     });
 
-    const client = createClient({ token: "abc", fetch: mockFetch });
+    const client = createClient({token: 'abc', fetch: mockFetch});
 
-    await expect(client.get("/accounts/profile/")).rejects.toMatchObject({
+    await expect(client.get('/accounts/profile/')).rejects.toMatchObject({
       status: 429,
-      message: "Rate limited",
+      message: 'Rate limited',
     });
   });
 
-  it("allows custom baseUrl", async () => {
+  it('allows custom baseUrl', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -238,38 +238,38 @@ describe("createClient", () => {
     });
 
     const client = createClient({
-      token: "abc",
-      baseUrl: "https://custom.example.com/api/2/",
+      token: 'abc',
+      baseUrl: 'https://custom.example.com/api/2/',
       fetch: mockFetch,
     });
-    await client.get("/accounts/profile/");
+    await client.get('/accounts/profile/');
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://custom.example.com/api/2/accounts/profile/",
+      'https://custom.example.com/api/2/accounts/profile/',
       expect.any(Object),
     );
   });
 
-  it("serializes request body as JSON", async () => {
+  it('serializes request body as JSON', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve({ token: "abc123" }),
+      json: () => Promise.resolve({token: 'abc123'}),
     });
 
-    const client = createClient({ token: "abc", fetch: mockFetch });
-    await client.post("/auth/simple-token/", {
-      body: { username: "user", password: "pass" },
+    const client = createClient({token: 'abc', fetch: mockFetch});
+    await client.post('/auth/simple-token/', {
+      body: {username: 'user', password: 'pass'},
     });
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/auth/simple-token/",
+      'https://exist.io/api/2/auth/simple-token/',
       expect.objectContaining({
-        method: "POST",
+        method: 'POST',
         headers: expect.objectContaining({
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         }),
-        body: JSON.stringify({ username: "user", password: "pass" }),
+        body: JSON.stringify({username: 'user', password: 'pass'}),
       }),
     );
   });
@@ -299,33 +299,33 @@ export interface ClientOptions {
 
 export interface ExistClient {
   get(path: string): Promise<unknown>;
-  post(path: string, opts?: { body?: unknown }): Promise<unknown>;
+  post(path: string, opts?: {body?: unknown}): Promise<unknown>;
 }
 
 export function createClient(opts: ClientOptions): ExistClient {
-  const { token, baseUrl = "https://exist.io/api/2/", fetch: fetchImpl = fetch } = opts;
+  const {token, baseUrl = 'https://exist.io/api/2/', fetch: fetchImpl = fetch} = opts;
 
   async function request(path: string, options: RequestInit = {}): Promise<unknown> {
-    const url = `${baseUrl.replace(/\/$/, "")}${path}`;
+    const url = `${baseUrl.replace(/\/$/, '')}${path}`;
     const headers: Record<string, string> = {
       Authorization: `Token ${token}`,
     };
 
-    const { body, ...rest } = options;
+    const {body, ...rest} = options;
     if (body !== undefined) {
-      headers["Content-Type"] = "application/json";
+      headers['Content-Type'] = 'application/json';
     }
 
     const response = await fetchImpl(url, {
       ...rest,
-      headers: { ...headers, ...rest.headers },
+      headers: {...headers, ...rest.headers},
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
 
     const data = await response.json().catch(() => ({}));
     const message =
-      typeof data === "object" && data !== null && "message" in data
-        ? (data as { message: string }).message
+      typeof data === 'object' && data !== null && 'message' in data
+        ? (data as {message: string}).message
         : response.statusText;
 
     if (!response.ok) {
@@ -342,7 +342,7 @@ export function createClient(opts: ClientOptions): ExistClient {
 
   return {
     get: (path) => request(path),
-    post: (path, { body } = {}) => request(path, { method: "POST", body }),
+    post: (path, {body} = {}) => request(path, {method: 'POST', body}),
   };
 }
 ```
@@ -373,35 +373,35 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 - [ ] **Step 1: Write the failing test**
 
 ```typescript
-import { describe, it, expect, vi } from "vitest";
-import { exchangeSimpleToken } from "../../src/endpoints/auth";
-import { createClient, type ExistClient } from "../../src/client";
+import {describe, it, expect, vi} from 'vitest';
+import {exchangeSimpleToken} from '../../src/endpoints/auth';
+import {createClient, type ExistClient} from '../../src/client';
 
-describe("exchangeSimpleToken", () => {
-  it("calls POST /auth/simple-token/ with credentials", async () => {
+describe('exchangeSimpleToken', () => {
+  it('calls POST /auth/simple-token/ with credentials', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve({ token: "abc123" }),
+      json: () => Promise.resolve({token: 'abc123'}),
     });
 
-    const client = createClient({ token: "unused", fetch: mockFetch });
+    const client = createClient({token: 'unused', fetch: mockFetch});
     const result = await exchangeSimpleToken(client, {
-      username: "user@example.com",
-      password: "secret",
+      username: 'user@example.com',
+      password: 'secret',
     });
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/auth/simple-token/",
+      'https://exist.io/api/2/auth/simple-token/',
       expect.objectContaining({
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({
-          username: "user@example.com",
-          password: "secret",
+          username: 'user@example.com',
+          password: 'secret',
         }),
       }),
     );
-    expect(result).toEqual({ token: "abc123" });
+    expect(result).toEqual({token: 'abc123'});
   });
 });
 ```
@@ -414,7 +414,7 @@ Expected: FAIL — module not found
 - [ ] **Step 3: Write auth.ts**
 
 ```typescript
-import type { ExistClient } from "../client";
+import type {ExistClient} from '../client';
 
 interface SimpleTokenRequest {
   username: string;
@@ -424,8 +424,8 @@ interface SimpleTokenRequest {
 export async function exchangeSimpleToken(
   client: ExistClient,
   credentials: SimpleTokenRequest,
-): Promise<{ token: string }> {
-  return client.post("/auth/simple-token/", { body: credentials }) as Promise<{
+): Promise<{token: string}> {
+  return client.post('/auth/simple-token/', {body: credentials}) as Promise<{
     token: string;
   }>;
 }
@@ -457,17 +457,17 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 - [ ] **Step 1: Write the failing test**
 
 ```typescript
-import { describe, it, expect, vi } from "vitest";
-import { getProfile } from "../../src/endpoints/account";
-import { createClient } from "../../src/client";
+import {describe, it, expect, vi} from 'vitest';
+import {getProfile} from '../../src/endpoints/account';
+import {createClient} from '../../src/client';
 
-describe("getProfile", () => {
-  it("calls GET /accounts/profile/", async () => {
+describe('getProfile', () => {
+  it('calls GET /accounts/profile/', async () => {
     const mockProfile = {
-      username: "testuser",
-      first_name: "Test",
-      last_name: "User",
-      timezone: "UTC",
+      username: 'testuser',
+      first_name: 'Test',
+      last_name: 'User',
+      timezone: 'UTC',
     };
 
     const mockFetch = vi.fn().mockResolvedValue({
@@ -476,12 +476,12 @@ describe("getProfile", () => {
       json: () => Promise.resolve(mockProfile),
     });
 
-    const client = createClient({ token: "abc", fetch: mockFetch });
+    const client = createClient({token: 'abc', fetch: mockFetch});
     const result = await getProfile(client);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/accounts/profile/",
-      expect.objectContaining({ method: "GET" }),
+      'https://exist.io/api/2/accounts/profile/',
+      expect.objectContaining({method: 'GET'}),
     );
     expect(result).toEqual(mockProfile);
   });
@@ -496,11 +496,11 @@ Expected: FAIL — module not found
 - [ ] **Step 3: Write account.ts**
 
 ```typescript
-import type { ExistClient } from "../client";
-import type { UserProfile } from "../types";
+import type {ExistClient} from '../client';
+import type {UserProfile} from '../types';
 
 export async function getProfile(client: ExistClient): Promise<UserProfile> {
-  return client.get("/accounts/profile/") as Promise<UserProfile>;
+  return client.get('/accounts/profile/') as Promise<UserProfile>;
 }
 ```
 
@@ -530,44 +530,44 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 - [ ] **Step 1: Write the failing test**
 
 ```typescript
-import { describe, it, expect, vi } from "vitest";
-import { getAttributesWithValues } from "../../src/endpoints/attributes";
-import { createClient } from "../../src/client";
+import {describe, it, expect, vi} from 'vitest';
+import {getAttributesWithValues} from '../../src/endpoints/attributes';
+import {createClient} from '../../src/client';
 
-describe("getAttributesWithValues", () => {
-  it("calls GET /attributes/with-values/ with default pagination", async () => {
+describe('getAttributesWithValues', () => {
+  it('calls GET /attributes/with-values/ with default pagination', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve({ count: 0, results: [] }),
+      json: () => Promise.resolve({count: 0, results: []}),
     });
 
-    const client = createClient({ token: "abc", fetch: mockFetch });
+    const client = createClient({token: 'abc', fetch: mockFetch});
     await getAttributesWithValues(client);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/attributes/with-values/",
-      expect.objectContaining({ method: "GET" }),
+      'https://exist.io/api/2/attributes/with-values/',
+      expect.objectContaining({method: 'GET'}),
     );
   });
 
-  it("passes query params for page, limit, days, attributes filters", async () => {
+  it('passes query params for page, limit, days, attributes filters', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve({ count: 0, results: [] }),
+      json: () => Promise.resolve({count: 0, results: []}),
     });
 
-    const client = createClient({ token: "abc", fetch: mockFetch });
+    const client = createClient({token: 'abc', fetch: mockFetch});
     await getAttributesWithValues(client, {
       page: 2,
       limit: 50,
       days: 7,
-      attributes: "mood",
+      attributes: 'mood',
     });
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/attributes/with-values/?page=2&limit=50&days=7&attributes=mood",
+      'https://exist.io/api/2/attributes/with-values/?page=2&limit=50&days=7&attributes=mood',
       expect.any(Object),
     );
   });
@@ -582,8 +582,8 @@ Expected: FAIL — module not found
 - [ ] **Step 3: Write attributes.ts**
 
 ```typescript
-import type { ExistClient } from "../client";
-import type { PagedAttributesWithValues } from "../types";
+import type {ExistClient} from '../client';
+import type {PagedAttributesWithValues} from '../types';
 
 interface GetAttributesParams {
   page?: number;
@@ -596,8 +596,8 @@ interface GetAttributesParams {
 
 function buildQuery(params: GetAttributesParams): string {
   const entries = Object.entries(params).filter(([, v]) => v !== undefined);
-  if (entries.length === 0) return "";
-  return "?" + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
+  if (entries.length === 0) return '';
+  return '?' + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join('&');
 }
 
 export async function getAttributesWithValues(
@@ -634,12 +634,12 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 - [ ] **Step 1: Write src/index.ts**
 
 ```typescript
-export { createClient } from "./client";
-export type { ExistClient, ClientOptions, ExistError } from "./client";
-export type { UserProfile, AttributeWithValues, PagedAttributesWithValues } from "./types";
-export { getProfile } from "./endpoints/account";
-export { getAttributesWithValues } from "./endpoints/attributes";
-export { exchangeSimpleToken } from "./endpoints/auth";
+export {createClient} from './client';
+export type {ExistClient, ClientOptions, ExistError} from './client';
+export type {UserProfile, AttributeWithValues, PagedAttributesWithValues} from './types';
+export {getProfile} from './endpoints/account';
+export {getAttributesWithValues} from './endpoints/attributes';
+export {exchangeSimpleToken} from './endpoints/auth';
 ```
 
 - [ ] **Step 2: Run typecheck to verify exports**

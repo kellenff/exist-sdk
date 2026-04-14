@@ -1,0 +1,9 @@
+{
+  "name": "@fromo/exist-sdk",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "publish": {
+    "registry": "https://jsr.io",
+    "exclude": ["**/*.test.ts", "**/*.test-d.ts", "**/test/**", "scripts/**"]
+  }
+}

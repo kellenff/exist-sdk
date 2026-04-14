@@ -13,33 +13,33 @@ export interface ClientOptions {
 
 export interface ExistClient {
   get(path: string): Promise<unknown>;
-  post(path: string, opts?: { body?: unknown }): Promise<unknown>;
+  post(path: string, opts?: {body?: unknown}): Promise<unknown>;
 }
 
 export function createClient(opts: ClientOptions): ExistClient {
-  const { token, baseUrl = "https://exist.io/api/2/", fetch: fetchImpl = fetch } = opts;
+  const {token, baseUrl = 'https://exist.io/api/2/', fetch: fetchImpl = fetch} = opts;
 
   async function request(path: string, options: RequestInit = {}): Promise<unknown> {
-    const url = `${baseUrl.replace(/\/$/, "")}${path}`;
+    const url = `${baseUrl.replace(/\/$/, '')}${path}`;
     const headers: Record<string, string> = {
       Authorization: `Token ${token}`,
     };
 
-    const { body, ...rest } = options;
+    const {body, ...rest} = options;
     if (body !== undefined) {
-      headers["Content-Type"] = "application/json";
+      headers['Content-Type'] = 'application/json';
     }
 
     const response = await fetchImpl(url, {
       ...rest,
-      headers: { ...headers, ...rest.headers },
+      headers: {...headers, ...rest.headers},
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
 
     const data = await response.json().catch(() => ({}));
     const message =
-      typeof data === "object" && data !== null && "message" in data
-        ? (data as { message: string }).message
+      typeof data === 'object' && data !== null && 'message' in data
+        ? (data as {message: string}).message
         : response.statusText;
 
     if (!response.ok) {
@@ -49,8 +49,8 @@ export function createClient(opts: ClientOptions): ExistClient {
         cause: data,
       };
       // Extract code if present in response body
-      if (typeof data === "object" && data !== null && "code" in data) {
-        err.code = String((data as { code: unknown }).code);
+      if (typeof data === 'object' && data !== null && 'code' in data) {
+        err.code = String((data as {code: unknown}).code);
       }
       throw err;
     }
@@ -59,7 +59,7 @@ export function createClient(opts: ClientOptions): ExistClient {
   }
 
   return {
-    get: (path) => request(path, { method: "GET" }),
-    post: (path, { body } = {}) => request(path, { method: "POST", body: body as BodyInit }),
+    get: (path) => request(path, {method: 'GET'}),
+    post: (path, {body} = {}) => request(path, {method: 'POST', body: body as BodyInit}),
   };
 }
