@@ -125,19 +125,19 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 ```js
 /** @type {import('semantic-release').GlobalConfig} */
 export default {
-  branches: ["main"],
+  branches: ['main'],
   plugins: [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/npm",
+    '@semantic-release/commit-analyzer',
+    '@semantic-release/release-notes-generator',
+    '@semantic-release/npm',
     [
-      "@semantic-release/exec",
+      '@semantic-release/exec',
       {
         // Publish to JSR with OIDC authentication (--github flag)
-        publishCmd: "deno run -A jsr:@jsr/octane publish --github --version ${nextRelease.version}",
+        publishCmd: 'deno run -A jsr:@jsr/octane publish --github --version ${nextRelease.version}',
       },
     ],
-    "@semantic-release/git",
+    '@semantic-release/git',
   ],
 };
 ```
@@ -168,7 +168,7 @@ name: CI
 
 on:
   push:
-    branches: ["**"]
+    branches: ['**']
   pull_request:
     branches: [main]
 
@@ -181,12 +181,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "yarn"
+          node-version: '20'
+          cache: 'yarn'
 
       - run: yarn install --immutable
         env:
-          NPM_CONFIG_UPDATE_NOTIFIER: "false"
+          NPM_CONFIG_UPDATE_NOTIFIER: 'false'
 
       - run: yarn lint
       - run: yarn format:check
@@ -210,17 +210,17 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "yarn"
+          node-version: '20'
+          cache: 'yarn'
 
       - run: yarn install --immutable
         env:
-          NPM_CONFIG_UPDATE_NOTIFIER: "false"
+          NPM_CONFIG_UPDATE_NOTIFIER: 'false'
 
       - run: yarn release
         env:
           # OIDC: npm-publish action handles token exchange automatically
-          NPM_CONFIG_UPDATE_NOTIFIER: "false"
+          NPM_CONFIG_UPDATE_NOTIFIER: 'false'
 ```
 
 **Notes:**

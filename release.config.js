@@ -1,17 +1,17 @@
 /** @type {import('semantic-release').GlobalConfig} */
 export default {
-  branches: ["main"],
+  branches: ['main'],
   plugins: [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/npm",
+    '@semantic-release/commit-analyzer',
+    '@semantic-release/release-notes-generator',
+    '@semantic-release/npm',
     [
-      "@semantic-release/exec",
+      '@semantic-release/exec',
       {
         // Publish to JSR with OIDC authentication (--github flag)
-        publishCmd: "deno run -A jsr:@jsr/octane publish --github --version ${nextRelease.version}",
+        publishCmd: 'deno run -A jsr:@jsr/octane publish --github --version ${nextRelease.version}',
       },
     ],
-    "@semantic-release/git",
+    '@semantic-release/git',
   ],
 };

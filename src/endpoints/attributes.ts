@@ -1,5 +1,5 @@
-import type { ExistClient } from "../client.js";
-import type { PagedAttributesWithValues } from "../types.js";
+import type {ExistClient} from '../client.js';
+import type {PagedAttributesWithValues} from '../types.js';
 
 interface GetAttributesParams {
   page?: number;
@@ -12,8 +12,8 @@ interface GetAttributesParams {
 
 function buildQuery(params: GetAttributesParams): string {
   const entries = Object.entries(params).filter(([, v]) => v !== undefined);
-  if (entries.length === 0) return "";
-  return "?" + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
+  if (entries.length === 0) return '';
+  return '?' + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join('&');
 }
 
 export async function getAttributesWithValues(

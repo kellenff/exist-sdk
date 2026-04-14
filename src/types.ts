@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-  "/api/2/auth/simple-token/": {
+  '/api/2/auth/simple-token/': {
     parameters: {
       query?: never;
       header?: never;
@@ -18,14 +18,14 @@ export interface paths {
      * @description Exchange `username` and `password` for a long-lived `token`. Use `Authorization: Token <token>` on API v2.
      *     Official tutorial uses `POST https://exist.io/api/2/auth/simple-token/`. Older copy on the important-values page referenced `/api/1/`; prefer v2.
      */
-    post: operations["authSimpleToken"];
+    post: operations['authSimpleToken'];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/oauth2/authorize": {
+  '/oauth2/authorize': {
     parameters: {
       query?: never;
       header?: never;
@@ -37,7 +37,7 @@ export interface paths {
      * @description Redirect end user here. On success Exist redirects to `redirect_uri` with `?code=...`.
      *     `redirect_uri` must be HTTPS in production (see official OAuth2 reference).
      */
-    get: operations["oauth2Authorize"];
+    get: operations['oauth2Authorize'];
     put?: never;
     post?: never;
     delete?: never;
@@ -46,7 +46,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/oauth2/access_token": {
+  '/oauth2/access_token': {
     parameters: {
       query?: never;
       header?: never;
@@ -56,14 +56,14 @@ export interface paths {
     get?: never;
     put?: never;
     /** Exchange authorization code or refresh token */
-    post: operations["oauth2AccessToken"];
+    post: operations['oauth2AccessToken'];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/api/2/accounts/profile/": {
+  '/api/2/accounts/profile/': {
     parameters: {
       query?: never;
       header?: never;
@@ -74,7 +74,7 @@ export interface paths {
      * Current user profile
      * @description Recommended check that a token works.
      */
-    get: operations["getAccountsProfile"];
+    get: operations['getAccountsProfile'];
     put?: never;
     post?: never;
     delete?: never;
@@ -83,7 +83,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/api/2/attributes/with-values/": {
+  '/api/2/attributes/with-values/': {
     parameters: {
       query?: never;
       header?: never;
@@ -95,7 +95,7 @@ export interface paths {
      * @description Typical query params include `page`, `limit`, `days`, `groups`, `date_max`, `attributes`
      *     (filter to specific attribute names). Default pagination ~20 items per page.
      */
-    get: operations["getAttributesWithValues"];
+    get: operations['getAttributesWithValues'];
     put?: never;
     post?: never;
     delete?: never;
@@ -104,7 +104,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/api/2/averages/": {
+  '/api/2/averages/': {
     parameters: {
       query?: never;
       header?: never;
@@ -116,7 +116,7 @@ export interface paths {
      * @description Query params include `attributes` (filter), `include_historical` (truthy for history),
      *     `page`, `limit` per official read-client guide.
      */
-    get: operations["getAverages"];
+    get: operations['getAverages'];
     put?: never;
     post?: never;
     delete?: never;
@@ -125,7 +125,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/api/2/correlations/": {
+  '/api/2/correlations/': {
     parameters: {
       query?: never;
       header?: never;
@@ -133,7 +133,7 @@ export interface paths {
       cookie?: never;
     };
     /** List correlations (paged) */
-    get: operations["getCorrelations"];
+    get: operations['getCorrelations'];
     put?: never;
     post?: never;
     delete?: never;
@@ -142,7 +142,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/api/2/correlations/combo/": {
+  '/api/2/correlations/combo/': {
     parameters: {
       query?: never;
       header?: never;
@@ -150,7 +150,7 @@ export interface paths {
       cookie?: never;
     };
     /** Single correlation for an attribute pair */
-    get: operations["getCorrelationCombo"];
+    get: operations['getCorrelationCombo'];
     put?: never;
     post?: never;
     delete?: never;
@@ -159,7 +159,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/api/2/attributes/acquire/": {
+  '/api/2/attributes/acquire/': {
     parameters: {
       query?: never;
       header?: never;
@@ -173,14 +173,14 @@ export interface paths {
      * @description JSON array of objects with `template` or `name`, and `manual` boolean.
      *     Requires Bearer token with appropriate write scope.
      */
-    post: operations["postAttributesAcquire"];
+    post: operations['postAttributesAcquire'];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/api/2/attributes/release/": {
+  '/api/2/attributes/release/': {
     parameters: {
       query?: never;
       header?: never;
@@ -190,14 +190,14 @@ export interface paths {
     get?: never;
     put?: never;
     /** Release ownership of attributes */
-    post: operations["postAttributesRelease"];
+    post: operations['postAttributesRelease'];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/api/2/attributes/create/": {
+  '/api/2/attributes/create/': {
     parameters: {
       query?: never;
       header?: never;
@@ -210,14 +210,14 @@ export interface paths {
      * Create custom attributes
      * @description Array of objects with `label`, `value_type` (integer enum), `group`, `manual`.
      */
-    post: operations["postAttributesCreate"];
+    post: operations['postAttributesCreate'];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/api/2/attributes/update/": {
+  '/api/2/attributes/update/': {
     parameters: {
       query?: never;
       header?: never;
@@ -230,14 +230,14 @@ export interface paths {
      * Set attribute totals for one or more dates
      * @description Array of `{ "name", "date" (yyyy-mm-dd), "value" }` objects.
      */
-    post: operations["postAttributesUpdate"];
+    post: operations['postAttributesUpdate'];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/api/2/attributes/increment/": {
+  '/api/2/attributes/increment/': {
     parameters: {
       query?: never;
       header?: never;
@@ -250,7 +250,7 @@ export interface paths {
      * Increment attribute values (often for "today")
      * @description Array of `{ "name", "value" }`; optional `date` omitted defaults to today per tutorial.
      */
-    post: operations["postAttributesIncrement"];
+    post: operations['postAttributesIncrement'];
     delete?: never;
     options?: never;
     head?: never;
@@ -260,9 +260,9 @@ export interface paths {
 }
 export type webhooks = Record<string, never>;
 // Re-export commonly used types for convenience
-export type UserProfile = components["schemas"]["UserProfile"];
-export type AttributeWithValues = components["schemas"]["AttributeWithValues"];
-export type PagedAttributesWithValues = components["schemas"]["PagedAttributesWithValues"];
+export type UserProfile = components['schemas']['UserProfile'];
+export type AttributeWithValues = components['schemas']['AttributeWithValues'];
+export type PagedAttributesWithValues = components['schemas']['PagedAttributesWithValues'];
 
 export interface components {
   schemas: {
@@ -271,7 +271,7 @@ export interface components {
     };
     OAuthAuthorizationCodeRequest: {
       /** @enum {string} */
-      grant_type: "authorization_code";
+      grant_type: 'authorization_code';
       code: string;
       client_id: string;
       client_secret: string;
@@ -280,7 +280,7 @@ export interface components {
     };
     OAuthRefreshTokenRequest: {
       /** @enum {string} */
-      grant_type: "refresh_token";
+      grant_type: 'refresh_token';
       refresh_token: string;
       client_id: string;
       client_secret: string;
@@ -330,7 +330,7 @@ export interface components {
       value?: unknown;
     };
     AttributeWithValues: {
-      group?: components["schemas"]["AttributeGroup"];
+      group?: components['schemas']['AttributeGroup'];
       template?: string | null;
       name?: string;
       label?: string;
@@ -339,8 +339,8 @@ export interface components {
       active?: boolean;
       value_type?: number;
       value_type_description?: string;
-      service?: components["schemas"]["AttributeService"];
-      values?: components["schemas"]["AttributeValueDay"][];
+      service?: components['schemas']['AttributeService'];
+      values?: components['schemas']['AttributeValueDay'][];
     } & {
       [key: string]: unknown;
     };
@@ -350,7 +350,7 @@ export interface components {
       next?: string | null;
       /** Format: uri */
       previous?: string | null;
-      results?: components["schemas"]["AttributeWithValues"][];
+      results?: components['schemas']['AttributeWithValues'][];
     };
     AverageRow: {
       user_attribute?: string;
@@ -371,7 +371,7 @@ export interface components {
       count?: number;
       next?: string | null;
       previous?: string | null;
-      results?: components["schemas"]["AverageRow"][];
+      results?: components['schemas']['AverageRow'][];
     };
     Correlation: {
       /** Format: date */
@@ -400,7 +400,7 @@ export interface components {
       /** Format: uri */
       next?: string | null;
       previous?: string | null;
-      results?: components["schemas"]["Correlation"][];
+      results?: components['schemas']['Correlation'][];
     };
     /** @description Use `template` OR `name` per acquire rules in write-client guide. */
     AcquireOrReleaseItem: {
@@ -470,11 +470,11 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/x-www-form-urlencoded": {
+        'application/x-www-form-urlencoded': {
           username: string;
           password: string;
         };
-        "application/json": {
+        'application/json': {
           username: string;
           password: string;
         };
@@ -487,16 +487,16 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["SimpleTokenResponse"];
+          'application/json': components['schemas']['SimpleTokenResponse'];
         };
       };
-      429: components["responses"]["TooManyRequests"];
+      429: components['responses']['TooManyRequests'];
     };
   };
   oauth2Authorize: {
     parameters: {
       query: {
-        response_type: "code";
+        response_type: 'code';
         client_id: string;
         redirect_uri: string;
         /** @description Space-separated scopes (e.g. `media_write mood_read`). */
@@ -526,9 +526,9 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/x-www-form-urlencoded":
-          | components["schemas"]["OAuthAuthorizationCodeRequest"]
-          | components["schemas"]["OAuthRefreshTokenRequest"];
+        'application/x-www-form-urlencoded':
+          | components['schemas']['OAuthAuthorizationCodeRequest']
+          | components['schemas']['OAuthRefreshTokenRequest'];
       };
     };
     responses: {
@@ -538,7 +538,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["OAuthAccessTokenResponse"];
+          'application/json': components['schemas']['OAuthAccessTokenResponse'];
         };
       };
     };
@@ -558,19 +558,19 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["UserProfile"];
+          'application/json': components['schemas']['UserProfile'];
         };
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   getAttributesWithValues: {
     parameters: {
       query?: {
-        page?: components["parameters"]["Page"];
+        page?: components['parameters']['Page'];
         /** @description Page size (tutorial used up to 100). */
-        limit?: components["parameters"]["Limit"];
+        limit?: components['parameters']['Limit'];
         /** @description Number of days of values ending at most recent (e.g. `7`). */
         days?: number;
         /** @description Filter by group name (e.g. `custom` for tags). */
@@ -592,19 +592,19 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PagedAttributesWithValues"];
+          'application/json': components['schemas']['PagedAttributesWithValues'];
         };
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   getAverages: {
     parameters: {
       query?: {
-        page?: components["parameters"]["Page"];
+        page?: components['parameters']['Page'];
         /** @description Page size (tutorial used up to 100). */
-        limit?: components["parameters"]["Limit"];
+        limit?: components['parameters']['Limit'];
         attributes?: string;
         include_historical?: 0 | 1;
       };
@@ -620,19 +620,19 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PagedAverages"];
+          'application/json': components['schemas']['PagedAverages'];
         };
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   getCorrelations: {
     parameters: {
       query?: {
-        page?: components["parameters"]["Page"];
+        page?: components['parameters']['Page'];
         /** @description Page size (tutorial used up to 100). */
-        limit?: components["parameters"]["Limit"];
+        limit?: components['parameters']['Limit'];
         /** @description When `1`, filter to statistically confident correlations. */
         confident?: 0 | 1;
         /** @description Filter correlations involving this attribute name. */
@@ -650,11 +650,11 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["PagedCorrelations"];
+          'application/json': components['schemas']['PagedCorrelations'];
         };
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   getCorrelationCombo: {
@@ -675,10 +675,10 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["Correlation"];
+          'application/json': components['schemas']['Correlation'];
         };
       };
-      401: components["responses"]["Unauthorized"];
+      401: components['responses']['Unauthorized'];
       /** @description No correlation for that pair */
       404: {
         headers: {
@@ -686,7 +686,7 @@ export interface operations {
         };
         content?: never;
       };
-      429: components["responses"]["TooManyRequests"];
+      429: components['responses']['TooManyRequests'];
     };
   };
   postAttributesAcquire: {
@@ -698,7 +698,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AcquireOrReleaseItem"][];
+        'application/json': components['schemas']['AcquireOrReleaseItem'][];
       };
     };
     responses: {
@@ -709,8 +709,8 @@ export interface operations {
         };
         content?: never;
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   postAttributesRelease: {
@@ -722,7 +722,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AcquireOrReleaseItem"][];
+        'application/json': components['schemas']['AcquireOrReleaseItem'][];
       };
     };
     responses: {
@@ -733,8 +733,8 @@ export interface operations {
         };
         content?: never;
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   postAttributesCreate: {
@@ -746,7 +746,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["CreateAttributeItem"][];
+        'application/json': components['schemas']['CreateAttributeItem'][];
       };
     };
     responses: {
@@ -756,13 +756,13 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": {
+          'application/json': {
             [key: string]: unknown;
           };
         };
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   postAttributesUpdate: {
@@ -774,7 +774,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AttributeValueUpdate"][];
+        'application/json': components['schemas']['AttributeValueUpdate'][];
       };
     };
     responses: {
@@ -785,8 +785,8 @@ export interface operations {
         };
         content?: never;
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
   postAttributesIncrement: {
@@ -798,7 +798,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AttributeIncrement"][];
+        'application/json': components['schemas']['AttributeIncrement'][];
       };
     };
     responses: {
@@ -808,13 +808,13 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": {
+          'application/json': {
             [key: string]: unknown;
           };
         };
       };
-      401: components["responses"]["Unauthorized"];
-      429: components["responses"]["TooManyRequests"];
+      401: components['responses']['Unauthorized'];
+      429: components['responses']['TooManyRequests'];
     };
   };
 }

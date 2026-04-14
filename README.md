@@ -23,13 +23,13 @@ import { ... } from "jsr:@fromo/exist-sdk";
 ## Usage
 
 ```ts
-import { ExistClient } from "@fromo/exist-sdk";
+import {ExistClient} from '@fromo/exist-sdk';
 
 const client = new ExistClient({
   token: process.env.EXIST_TOKEN!,
 });
 
-const { data } = await client.attributes.list();
+const {data} = await client.attributes.list();
 ```
 
 ## Requirements

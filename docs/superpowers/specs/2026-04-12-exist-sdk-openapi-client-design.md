@@ -119,15 +119,15 @@ No automatic retry. No circuit breaker. Caller decides retry policy.
 
 ```typescript
 // scripts/generate-types.ts
-import { generateTypes } from "openapi-typescript";
-import { writeFileSync } from "node:fs";
+import {generateTypes} from 'openapi-typescript';
+import {writeFileSync} from 'node:fs';
 
-const spec = new URL("../docs/exist-api-openapi.yaml", import.meta.url);
-const output = new URL("../src/types.ts", import.meta.url);
+const spec = new URL('../docs/exist-api-openapi.yaml', import.meta.url);
+const output = new URL('../src/types.ts', import.meta.url);
 
-const types = await generateTypes(spec, { output });
+const types = await generateTypes(spec, {output});
 writeFileSync(output, types);
-console.log("Generated src/types.ts");
+console.log('Generated src/types.ts');
 ```
 
 ## 6. Testing
@@ -154,11 +154,11 @@ No runtime dependencies. `fetch` is provided by the host runtime.
 ## 8. Exports (`src/index.ts`)
 
 ```typescript
-export { createClient } from "./client";
-export type { ExistClient, ClientOptions } from "./client";
-export type { UserProfile, AttributeWithValues, PagedAttributesWithValues } from "./types";
-export { getProfile } from "./endpoints/account";
-export { getAttributesWithValues } from "./endpoints/attributes";
-export { exchangeSimpleToken } from "./endpoints/auth";
-export type { ExistError } from "./client";
+export {createClient} from './client';
+export type {ExistClient, ClientOptions} from './client';
+export type {UserProfile, AttributeWithValues, PagedAttributesWithValues} from './types';
+export {getProfile} from './endpoints/account';
+export {getAttributesWithValues} from './endpoints/attributes';
+export {exchangeSimpleToken} from './endpoints/auth';
+export type {ExistError} from './client';
 ```

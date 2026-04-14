@@ -85,27 +85,27 @@ Uses `"type": "module"`, so uses `.js` extension with `export default`.
 ```js
 /** @type {import('semantic-release').GlobalConfig} */
 export default {
-  branches: ["main"],
+  branches: ['main'],
   plugins: [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/npm",
+    '@semantic-release/commit-analyzer',
+    '@semantic-release/release-notes-generator',
+    '@semantic-release/npm',
     [
-      "@semantic-release/exec",
+      '@semantic-release/exec',
       {
         // Sync version from semantic-release into deno.json before JSR publish
         prepareCmd:
-          "deno run -A jsr:@jsr/octane publish --dry-run --version ${nextRelease.version} 2>/dev/null || true",
+          'deno run -A jsr:@jsr/octane publish --dry-run --version ${nextRelease.version} 2>/dev/null || true',
       },
     ],
     [
-      "@semantic-release/exec",
+      '@semantic-release/exec',
       {
         // Actually publish to JSR with the resolved version
-        publishCmd: "deno run -A jsr:@jsr/octane publish --version ${nextRelease.version}",
+        publishCmd: 'deno run -A jsr:@jsr/octane publish --version ${nextRelease.version}',
       },
     ],
-    "@semantic-release/git",
+    '@semantic-release/git',
   ],
 };
 ```

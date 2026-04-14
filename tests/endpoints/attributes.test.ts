@@ -1,41 +1,58 @@
-import { describe, it, expect, vi } from "vitest";
-import { getAttributesWithValues } from "../../src/endpoints/attributes.js";
-import { createClient } from "../../src/client.js";
+import {describe, it, expect, vi} from 'vitest';
 
-describe("getAttributesWithValues", () => {
-  it("calls GET /attributes/with-values/ with default pagination", async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve({ count: 0, results: [] }),
-    });
+import {createClient} from '../../src/client.js';
+import {getAttributesWithValues} from '../../src/endpoints/attributes.js';
 
-    const client = createClient({ token: "abc", fetch: mockFetch });
+describe('getAttributesWithValues', () => {
+  it('calls GET /attributes/with-values/ with default pagination', async () => {
+    const mockFetch = vi
+      .fn<
+        () => Promise<{
+          ok: boolean;
+          status: number;
+          json: () => Promise<{count: number; results: unknown[]}>;
+        }>
+      >()
+      .mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({count: 0, results: []}),
+      });
+
+    const client = createClient({token: 'abc', fetch: mockFetch});
     await getAttributesWithValues(client);
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/attributes/with-values/",
-      expect.objectContaining({ method: "GET" }),
+      'https://exist.io/api/2/attributes/with-values/',
+      expect.objectContaining({method: 'GET'}),
     );
   });
 
-  it("passes query params for page, limit, days, attributes filters", async () => {
-    const mockFetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve({ count: 0, results: [] }),
-    });
+  it('passes query params for page, limit, days, attributes filters', async () => {
+    const mockFetch = vi
+      .fn<
+        () => Promise<{
+          ok: boolean;
+          status: number;
+          json: () => Promise<{count: number; results: unknown[]}>;
+        }>
+      >()
+      .mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({count: 0, results: []}),
+      });
 
-    const client = createClient({ token: "abc", fetch: mockFetch });
+    const client = createClient({token: 'abc', fetch: mockFetch});
     await getAttributesWithValues(client, {
       page: 2,
       limit: 50,
       days: 7,
-      attributes: "mood",
+      attributes: 'mood',
     });
 
     expect(mockFetch).toHaveBeenCalledWith(
-      "https://exist.io/api/2/attributes/with-values/?page=2&limit=50&days=7&attributes=mood",
+      'https://exist.io/api/2/attributes/with-values/?page=2&limit=50&days=7&attributes=mood',
       expect.any(Object),
     );
   });

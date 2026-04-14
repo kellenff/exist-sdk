@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Exist.io HTTP API (unofficial aggregate)
-  version: "2.0.0"
+  version: '2.0.0'
   description: |
     OpenAPI description derived from Exist developer documentation (see **x-exist-sources**).
     This file is **not** published by Hello Code; validate against live API before relying on it.
@@ -76,14 +76,14 @@ paths:
                 password:
                   type: string
       responses:
-        "200":
+        '200':
           description: Token issued
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SimpleTokenResponse"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+                $ref: '#/components/schemas/SimpleTokenResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /oauth2/authorize:
     get:
@@ -119,7 +119,7 @@ paths:
           schema:
             type: string
       responses:
-        "302":
+        '302':
           description: Redirect to Exist login or to client redirect_uri with code or error
 
   /oauth2/access_token:
@@ -134,15 +134,15 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/OAuthAuthorizationCodeRequest"
-                - $ref: "#/components/schemas/OAuthRefreshTokenRequest"
+                - $ref: '#/components/schemas/OAuthAuthorizationCodeRequest'
+                - $ref: '#/components/schemas/OAuthRefreshTokenRequest'
       responses:
-        "200":
+        '200':
           description: Token response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OAuthAccessTokenResponse"
+                $ref: '#/components/schemas/OAuthAccessTokenResponse'
 
   /api/2/accounts/profile/:
     get:
@@ -151,16 +151,16 @@ paths:
       description: Recommended check that a token works.
       operationId: getAccountsProfile
       responses:
-        "200":
+        '200':
           description: Profile
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserProfile"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/attributes/with-values/:
     get:
@@ -171,8 +171,8 @@ paths:
         (filter to specific attribute names). Default pagination ~20 items per page.
       operationId: getAttributesWithValues
       parameters:
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/Limit"
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
         - name: days
           in: query
           description: Number of days of values ending at most recent (e.g. `7`).
@@ -196,16 +196,16 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Paged attributes
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedAttributesWithValues"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+                $ref: '#/components/schemas/PagedAttributesWithValues'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/averages/:
     get:
@@ -216,8 +216,8 @@ paths:
         `page`, `limit` per official read-client guide.
       operationId: getAverages
       parameters:
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/Limit"
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
         - name: attributes
           in: query
           schema:
@@ -228,16 +228,16 @@ paths:
             type: integer
             enum: [0, 1]
       responses:
-        "200":
+        '200':
           description: Paged averages
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedAverages"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+                $ref: '#/components/schemas/PagedAverages'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/correlations/:
     get:
@@ -245,8 +245,8 @@ paths:
       summary: List correlations (paged)
       operationId: getCorrelations
       parameters:
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/Limit"
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
         - name: confident
           in: query
           description: When `1`, filter to statistically confident correlations.
@@ -259,16 +259,16 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: Paged correlations
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PagedCorrelations"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+                $ref: '#/components/schemas/PagedCorrelations'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/correlations/combo/:
     get:
@@ -287,18 +287,18 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: One correlation object
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Correlation"
-        "404":
+                $ref: '#/components/schemas/Correlation'
+        '404':
           description: No correlation for that pair
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/attributes/acquire/:
     post:
@@ -315,14 +315,14 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/AcquireOrReleaseItem"
+                $ref: '#/components/schemas/AcquireOrReleaseItem'
       responses:
-        "200":
+        '200':
           description: Success
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/attributes/release/:
     post:
@@ -336,14 +336,14 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/AcquireOrReleaseItem"
+                $ref: '#/components/schemas/AcquireOrReleaseItem'
       responses:
-        "200":
+        '200':
           description: Success
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/attributes/create/:
     post:
@@ -359,19 +359,19 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/CreateAttributeItem"
+                $ref: '#/components/schemas/CreateAttributeItem'
       responses:
-        "200":
+        '200':
           description: Created; body includes `success` array per tutorial
           content:
             application/json:
               schema:
                 type: object
                 additionalProperties: true
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/attributes/update/:
     post:
@@ -387,14 +387,14 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/AttributeValueUpdate"
+                $ref: '#/components/schemas/AttributeValueUpdate'
       responses:
-        "200":
+        '200':
           description: Updated
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
   /api/2/attributes/increment/:
     post:
@@ -410,19 +410,19 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/AttributeIncrement"
+                $ref: '#/components/schemas/AttributeIncrement'
       responses:
-        "200":
+        '200':
           description: Success; tutorial shows `success[0].current` for new total
           content:
             application/json:
               schema:
                 type: object
                 additionalProperties: true
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
 
 components:
   parameters:
@@ -453,7 +453,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: OAuth access token
-      description: "OAuth2 access token. Header format: Authorization: Bearer <access_token>"
+      description: 'OAuth2 access token. Header format: Authorization: Bearer <access_token>'
 
   responses:
     Unauthorized:
@@ -581,7 +581,7 @@ components:
       type: object
       properties:
         group:
-          $ref: "#/components/schemas/AttributeGroup"
+          $ref: '#/components/schemas/AttributeGroup'
         template:
           type: string
           nullable: true
@@ -600,11 +600,11 @@ components:
         value_type_description:
           type: string
         service:
-          $ref: "#/components/schemas/AttributeService"
+          $ref: '#/components/schemas/AttributeService'
         values:
           type: array
           items:
-            $ref: "#/components/schemas/AttributeValueDay"
+            $ref: '#/components/schemas/AttributeValueDay'
       additionalProperties: true
 
     PagedAttributesWithValues:
@@ -623,7 +623,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/AttributeWithValues"
+            $ref: '#/components/schemas/AttributeWithValues'
 
     AverageRow:
       type: object
@@ -665,7 +665,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/AverageRow"
+            $ref: '#/components/schemas/AverageRow'
 
     Correlation:
       type: object
@@ -724,7 +724,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/Correlation"
+            $ref: '#/components/schemas/Correlation'
 
     AcquireOrReleaseItem:
       type: object
@@ -781,7 +781,7 @@ security:
   - ExistOAuth2: []
 
 x-exist-sources:
-  crawled_at: "2026-04-12"
+  crawled_at: '2026-04-12'
   pages:
     - url: https://developer.exist.io/reference/important_values/
       note: Base URLs, auth headers, rate limits, content types
