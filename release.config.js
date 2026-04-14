@@ -8,7 +8,6 @@ export default {
     [
       '@semantic-release/npm',
       {
-        npmPublish: 'restricted',
         trustedPublish: true,
       },
     ],
