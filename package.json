@@ -7,14 +7,14 @@
     "./types": "./src/types.ts"
   },
   "scripts": {
-    "generate-types": "tsx scripts/generate-types.ts",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "generate-types": "yarn tsx scripts/generate-types.ts",
+    "typecheck": "yarn tsc --noEmit",
+    "test": "yarn vitest",
+    "test:run": "yarn vitest run",
     "prepare": "husky",
-    "lint": "oxlint",
-    "format:check": "oxfmt --check",
-    "fix": "oxfmt && oxlint --fix --type-aware",
+    "lint": "yarn oxlint",
+    "format:check": "yarn oxfmt --check",
+    "fix": "yarn oxfmt && yarn oxlint --fix",
     "precommit": "yarn lint && yarn format:check",
     "release": "semantic-release"
   },
