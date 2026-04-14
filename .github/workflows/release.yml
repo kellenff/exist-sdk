@@ -39,11 +39,6 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    id_tokens:
-      NPM_ID_TOKEN:
-        aud: 'npm:registry.npmjs.org'
-      SIGSTORE_ID_TOKEN:
-        aud: sigstore
     concurrency:
       group: release
       cancel-in-progress: true
