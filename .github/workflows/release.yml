@@ -11,9 +11,9 @@ jobs:
     name: CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@0abd576ea0a0b3b0a1c1e26e18c47a1d22d7b2e3
         with:
           node-version: "20"
           cache: "yarn"
@@ -39,9 +39,9 @@ jobs:
       group: release
       cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@0abd576ea0a0b3b0a1c1e26e18c47a1d22d7b2e3
         with:
           node-version: "20"
           cache: "yarn"
