@@ -5,19 +5,14 @@ import {exchangeSimpleToken} from '../../src/endpoints/auth.js';
 
 describe('exchangeSimpleToken', () => {
   it('calls POST /auth/simple-token/ with credentials', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<{token: string}>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({token: 'abc123'}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({token: 'abc123'}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'unused', fetch: mockFetch});
     const result = await exchangeSimpleToken(client, {

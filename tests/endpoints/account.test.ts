@@ -12,19 +12,14 @@ describe('getProfile', () => {
       timezone: 'UTC',
     };
 
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<typeof mockProfile>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve(mockProfile),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve(mockProfile),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'abc', fetch: mockFetch});
     const result = await getProfile(client);

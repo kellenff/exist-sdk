@@ -4,19 +4,14 @@ import {createClient} from '../src/client.js';
 
 describe('createClient', () => {
   it('injects Authorization header with Token prefix', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<{username: string}>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({username: 'test'}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({username: 'test'}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'abc123', fetch: mockFetch});
     await client.get('/accounts/profile/');
@@ -32,19 +27,14 @@ describe('createClient', () => {
   });
 
   it('throws ExistError on non-2xx response', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<{message: string}>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: false,
-        status: 401,
-        json: () => Promise.resolve({message: 'Invalid token'}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: false,
+          status: 401,
+          json: () => Promise.resolve({message: 'Invalid token'}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'bad', fetch: mockFetch});
 
@@ -55,19 +45,14 @@ describe('createClient', () => {
   });
 
   it('throws ExistError on rate limit (429)', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<{message: string}>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: false,
-        status: 429,
-        json: () => Promise.resolve({message: 'Rate limited'}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: false,
+          status: 429,
+          json: () => Promise.resolve({message: 'Rate limited'}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'abc', fetch: mockFetch});
 
@@ -78,19 +63,14 @@ describe('createClient', () => {
   });
 
   it('allows custom baseUrl', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<object>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({
       token: 'abc',
@@ -106,19 +86,14 @@ describe('createClient', () => {
   });
 
   it('serializes request body as JSON', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<{token: string}>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({token: 'abc123'}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({token: 'abc123'}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'abc', fetch: mockFetch});
     await client.post('/auth/simple-token/', {

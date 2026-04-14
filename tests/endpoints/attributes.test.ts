@@ -5,19 +5,14 @@ import {getAttributesWithValues} from '../../src/endpoints/attributes.js';
 
 describe('getAttributesWithValues', () => {
   it('calls GET /attributes/with-values/ with default pagination', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<{count: number; results: unknown[]}>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({count: 0, results: []}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({count: 0, results: []}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'abc', fetch: mockFetch});
     await getAttributesWithValues(client);
@@ -29,19 +24,14 @@ describe('getAttributesWithValues', () => {
   });
 
   it('passes query params for page, limit, days, attributes filters', async () => {
-    const mockFetch = vi
-      .fn<
-        () => Promise<{
-          ok: boolean;
-          status: number;
-          json: () => Promise<{count: number; results: unknown[]}>;
-        }>
-      >()
-      .mockResolvedValue({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve({count: 0, results: []}),
-      });
+    const mockFetch = vi.fn<typeof fetch>().mockImplementation(
+      () =>
+        Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({count: 0, results: []}),
+        }) as unknown as Promise<Response>,
+    );
 
     const client = createClient({token: 'abc', fetch: mockFetch});
     await getAttributesWithValues(client, {
