@@ -1,6 +1,7 @@
 /** @type {import('semantic-release').GlobalConfig} */
 export default {
   branches: ['main'],
+  dryRun: process.env.DRY_RUN === 'true',
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
