@@ -8,8 +8,9 @@ export default {
     [
       "@semantic-release/exec",
       {
-        // Publish to JSR with OIDC authentication (--github flag)
-        publishCmd: "deno run -A jsr:@jsr/octane publish --github --version ${nextRelease.version}",
+        // Publish to JSR with token authentication
+        publishCmd:
+          'deno run -A jsr:@jsr/octane publish --token "$JSR_TOKEN" --version ${nextRelease.version}',
       },
     ],
     "@semantic-release/git",

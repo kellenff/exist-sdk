@@ -56,14 +56,13 @@ Single workflow with two jobs:
 - Depends on: `ci`
 - Condition: `github.event_name == 'push' && github.ref == 'refs/heads/main'`
 - Uses: semantic-release
-- Auth: OIDC (no secrets needed — see Authentication section)
+- Auth: Token-based (NPM_TOKEN + JSR_TOKEN secrets — see Authentication section)
 
-**Permissions (required for OIDC):**
+**Permissions (required for git tag creation):**
 
 ```yaml
 permissions:
   contents: write # needed for git tag creation
-  id-token: write # needed for OIDC token exchange (npm + JSR)
 ```
 
 **Concurrency:**
@@ -102,7 +101,8 @@ export default {
       "@semantic-release/exec",
       {
         // Actually publish to JSR with the resolved version
-        publishCmd: "deno run -A jsr:@jsr/octane publish --version ${nextRelease.version}",
+        publishCmd:
+          'deno run -A jsr:@jsr/octane publish --token "$JSR_TOKEN" --version ${nextRelease.version}',
       },
     ],
     "@semantic-release/git",
@@ -153,12 +153,10 @@ Handled by `@semantic-release/npm` plugin. `package.json` `name` must be set to 
 **Package name:** `@fromo/exist-sdk`
 **Registry:** jsr.io
 
-Uses `@jsr/octane` CLI called via `deno run -A jsr:@jsr/octane`.
-
-**OIDC authentication:** The `--github` flag handles JSR OIDC automatically — no `JSR_TOKEN` secret needed. Requires `permissions: id-token: write` in the workflow (already set above).
+Uses `@jsr/octane` CLI called via `deno run -A jsr:@jsr/octane`. Authentication uses `JSR_TOKEN` secret passed via environment variable `JSR_TOKEN`.
 
 ```sh
-deno run -A jsr:@jsr/octane publish --github --version ${nextRelease.version}
+deno run -A jsr:@jsr/octane publish --token "$JSR_TOKEN" --version ${nextRelease.version}
 ```
 
 **Pre-release flow:** When `nextRelease.version` contains `alpha`, `beta`, or `rc`, octane automatically treats it as a pre-release. The `--dist-tag next` flag maps pre-releases to JSR's `next` channel.
@@ -167,32 +165,18 @@ deno run -A jsr:@jsr/octane publish --github --version ${nextRelease.version}
 
 ---
 
-## Authentication (OIDC)
+## Authentication (Tokens)
 
-Both npm and JSR support OpenID Connect (OIDC) for GitHub Actions — no persistent tokens or secrets required.
+Both npm and JSR use classic token-based authentication via GitHub Actions secrets.
 
-| Registry | Method                                                                    | Token lifetime       | Setup required                                                    |
-| -------- | ------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------- |
-| npm      | OIDC via `npm-publish` action or semantic-release npm plugin `oidc: true` | Short-lived, per-run | Enable "Enable OIDC token" in GitHub repo settings → Environments |
-| JSR      | `jsr publish --github` (OIDC handled automatically)                       | Short-lived, per-run | `permissions: id-token: write` in workflow (already set)          |
+| Secret      | Purpose        | Scope                                                                    |
+| ----------- | -------------- | ------------------------------------------------------------------------ |
+| `NPM_TOKEN` | npm publishing | npmjs.com → Account Settings → Tokens → Generate Classic Token (Publish) |
+| `JSR_TOKEN` | JSR publishing | jsr.io → Settings → Access Tokens → Create                               |
 
-### npm OIDC setup
+Both secrets must be added to the repository at **Settings → Secrets and Variables → Actions**.
 
-1. In GitHub repo → **Settings** → **Environments** → create an environment named `npm`
-2. Under **Environment settings**, enable **Enable OIDC token**
-3. In your workflow, reference the environment:
-
-```yaml
-jobs:
-  release:
-    environment: npm
-```
-
-Alternatively, semantic-release's npm plugin can use OIDC without an environment if your repo has OIDC enabled at the repository level.
-
-### JSR OIDC setup
-
-No additional setup — `permissions: id-token: write` in the workflow is sufficient. The `@jsr/octane --github` flag handles the token exchange automatically.
+The workflow passes `NPM_TOKEN` via `@semantic-release/npm` plugin (reads from environment). `JSR_TOKEN` is passed explicitly in the `release` job's `env` block and consumed by the `jsr:@jsr/octane publish` command.
 
 ---
 
@@ -219,9 +203,8 @@ Before the first `main` push triggers a release:
 
 1. Change `package.json` `name` to `@fromo/exist-sdk`
 2. Add `deno.json` at project root
-3. Enable OIDC for npm: in GitHub repo → **Settings** → **Environments** → create `npm` environment → enable **Enable OIDC token**
-4. Ensure `permissions: id-token: write` is set in `.github/workflows/release.yml` (already in design)
-5. Ensure `main` branch has at least one `feat:` or `fix:` commit to trigger the first release
+3. Add `NPM_TOKEN` and `JSR_TOKEN` secrets to GitHub repo (**Settings → Secrets and Variables → Actions**)
+4. Ensure `main` branch has at least one `feat:` or `fix:` commit to trigger the first release
 
 ---
 
@@ -232,5 +215,5 @@ Before the first `main` push triggers a release:
 3. Install semantic-release plugins: `npm install --save-dev semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/npm @semantic-release/exec @semantic-release/git`
 4. Create `.github/workflows/release.yml`
 5. Create `release.config.js`
-6. Enable npm OIDC: create `npm` environment in GitHub repo settings with OIDC enabled
+6. Add `NPM_TOKEN` and `JSR_TOKEN` secrets to GitHub repository
 7. Verify CI passes on a PR before merging
