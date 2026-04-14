@@ -259,11 +259,6 @@ export interface paths {
   };
 }
 export type webhooks = Record<string, never>;
-// Re-export commonly used types for convenience
-export type UserProfile = components['schemas']['UserProfile'];
-export type AttributeWithValues = components['schemas']['AttributeWithValues'];
-export type PagedAttributesWithValues = components['schemas']['PagedAttributesWithValues'];
-
 export interface components {
   schemas: {
     SimpleTokenResponse: {
@@ -460,6 +455,10 @@ export interface components {
   pathItems: never;
 }
 export type $defs = Record<string, never>;
+// Re-export commonly used types for convenience
+export type UserProfile = components['schemas']['UserProfile'];
+export type AttributeWithValues = components['schemas']['AttributeWithValues'];
+export type PagedAttributesWithValues = components['schemas']['PagedAttributesWithValues'];
 export interface operations {
   authSimpleToken: {
     parameters: {
