@@ -26,6 +26,10 @@ jobs:
       - run: yarn format:check
       - run: yarn typecheck
       - run: yarn test:run
+      - run: yarn release
+        env:
+          DRY_RUN: 'true'
+          NPM_CONFIG_UPDATE_NOTIFIER: 'false'
 
   release:
     name: Release
@@ -45,6 +49,7 @@ jobs:
         with:
           node-version: '24'
           cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
 
       - run: yarn install --immutable
         env:
