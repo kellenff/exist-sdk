@@ -7,6 +7,7 @@ export interface ExistError {
 
 export interface ClientOptions {
   token: string;
+  authScheme?: 'Bearer' | 'Token';
   baseUrl?: string;
   fetch?: typeof fetch;
 }
@@ -17,12 +18,17 @@ export interface ExistClient {
 }
 
 export function createClient(opts: ClientOptions): ExistClient {
-  const {token, baseUrl = 'https://exist.io/api/2/', fetch: fetchImpl = fetch} = opts;
+  const {
+    token,
+    authScheme = 'Token',
+    baseUrl = 'https://exist.io/api/2/',
+    fetch: fetchImpl = fetch,
+  } = opts;
 
   async function request(path: string, options: RequestInit = {}): Promise<unknown> {
     const url = `${baseUrl.replace(/\/$/, '')}${path}`;
     const headers: Record<string, string> = {
-      Authorization: `Token ${token}`,
+      Authorization: `${authScheme} ${token}`,
     };
 
     const {body, ...rest} = options;
