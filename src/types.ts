@@ -459,6 +459,10 @@ export type $defs = Record<string, never>;
 export type UserProfile = components['schemas']['UserProfile'];
 export type AttributeWithValues = components['schemas']['AttributeWithValues'];
 export type PagedAttributesWithValues = components['schemas']['PagedAttributesWithValues'];
+export type PagedAverages = components['schemas']['PagedAverages'];
+export type AverageRow = components['schemas']['AverageRow'];
+export type PagedCorrelations = components['schemas']['PagedCorrelations'];
+export type Correlation = components['schemas']['Correlation'];
 export interface operations {
   authSimpleToken: {
     parameters: {
