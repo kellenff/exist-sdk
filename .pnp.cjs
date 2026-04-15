@@ -36,6 +36,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:06054c7e7bf89d0d1d29b247bd92c9b02ff0be35c4e22660b7589d600371dbdb36677c04dd8a7a7c9eaebb42545a9e49b291830179b6aac10b072a1662d6e544#npm:14.1.0"],\
           ["@types/node", "npm:25.6.0"],\
           ["husky", "npm:9.1.7"],\
+          ["oauth4webapi", "npm:3.8.5"],\
           ["openapi-typescript", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:7.13.0"],\
           ["oxfmt", "npm:0.44.0"],\
           ["oxlint", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:1.59.0"],\
@@ -396,6 +397,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:06054c7e7bf89d0d1d29b247bd92c9b02ff0be35c4e22660b7589d600371dbdb36677c04dd8a7a7c9eaebb42545a9e49b291830179b6aac10b072a1662d6e544#npm:14.1.0"],\
           ["@types/node", "npm:25.6.0"],\
           ["husky", "npm:9.1.7"],\
+          ["oauth4webapi", "npm:3.8.5"],\
           ["openapi-typescript", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:7.13.0"],\
           ["oxfmt", "npm:0.44.0"],\
           ["oxlint", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:1.59.0"],\
@@ -4638,6 +4640,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../.yarn/berry/cache/npm-user-validate-npm-4.0.0-747c3dcefd-10c0.zip/node_modules/npm-user-validate/",\
         "packageDependencies": [\
           ["npm-user-validate", "npm:4.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["oauth4webapi", [\
+      ["npm:3.8.5", {\
+        "packageLocation": "../../.yarn/berry/cache/oauth4webapi-npm-3.8.5-bf0acc7b7b-10c0.zip/node_modules/oauth4webapi/",\
+        "packageDependencies": [\
+          ["oauth4webapi", "npm:3.8.5"]\
         ],\
         "linkType": "HARD"\
       }]\

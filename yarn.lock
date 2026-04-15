@@ -287,6 +287,7 @@ __metadata:
     "@semantic-release/release-notes-generator": "npm:^14.1.0"
     "@types/node": "npm:^25.6.0"
     husky: "npm:^9.1.7"
+    oauth4webapi: "npm:^3.8.5"
     openapi-typescript: "npm:^7.13.0"
     oxfmt: "npm:^0.44.0"
     oxlint: "npm:^1.59.0"
@@ -3965,6 +3966,13 @@ __metadata:
     npm: bin/npm-cli.js
     npx: bin/npx-cli.js
   checksum: 10c0/21dbb5a9569d81c05932e4902103101d9db5d53d24931e22e68217de7ef378a7350a8fcb8bb122eb17d16ff2a0bc3d3067cf00b323323e7665c7a2fc07bbbee3
+  languageName: node
+  linkType: hard
+
+"oauth4webapi@npm:^3.8.5":
+  version: 3.8.5
+  resolution: "oauth4webapi@npm:3.8.5"
+  checksum: 10c0/688142b30f2243813721bfa4ab879aa0056636b19a3d7964d46b11b967199ab8f74f3771225f71ec766821d410add950475cf1afcfe26a9640cd1c0a1de8e423
   languageName: node
   linkType: hard
 
