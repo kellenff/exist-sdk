@@ -1,6 +1,6 @@
 import {describe, it, expect, vi} from 'vitest';
 
-import {createClient} from '../../src/client.js';
+import {ApiTokenSchema, createClient} from '../../src/client.js';
 import {getProfile} from '../../src/endpoints/account.js';
 
 describe('getProfile', () => {
@@ -22,7 +22,10 @@ describe('getProfile', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     const result = await getProfile(client);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -31,6 +34,7 @@ describe('getProfile', () => {
         headers: expect.objectContaining({Authorization: 'Token abc'}),
       }),
     );
-    expect(result).toEqual(mockProfile);
+    expect(result.ok).toBe(true);
+    expect(result.data).toEqual(mockProfile);
   });
 });

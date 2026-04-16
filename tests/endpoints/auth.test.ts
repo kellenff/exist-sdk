@@ -1,6 +1,6 @@
 import {describe, it, expect, vi} from 'vitest';
 
-import {createClient} from '../../src/client.js';
+import {ApiTokenSchema, createClient} from '../../src/client.js';
 import {exchangeSimpleToken} from '../../src/endpoints/auth.js';
 
 describe('exchangeSimpleToken', () => {
@@ -14,7 +14,10 @@ describe('exchangeSimpleToken', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'unused', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('unused'),
+      fetch: mockFetch,
+    });
     const result = await exchangeSimpleToken(client, {
       username: 'user@example.com',
       password: 'secret',

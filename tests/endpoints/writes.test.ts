@@ -1,6 +1,6 @@
 import {describe, it, expect, vi} from 'vitest';
 
-import {createClient} from '../../src/client.js';
+import {ApiTokenSchema, createClient} from '../../src/client.js';
 import {
   acquireAttributes,
   releaseAttributes,
@@ -20,7 +20,10 @@ describe('acquireAttributes', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await acquireAttributes(client, [{name: 'mood', manual: true}]);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -44,7 +47,10 @@ describe('releaseAttributes', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await releaseAttributes(client, [{name: 'mood'}]);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -68,7 +74,10 @@ describe('createAttributes', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await createAttributes(client, [
       {label: 'Weight', value_type: 1, group: 'health', manual: true},
     ]);
@@ -94,7 +103,10 @@ describe('updateAttributeValues', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await updateAttributeValues(client, [{name: 'weight', date: '2024-01-01', value: 180}]);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -118,7 +130,10 @@ describe('incrementAttributeValues', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await incrementAttributeValues(client, [{name: 'steps', value: 1000}]);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -140,7 +155,10 @@ describe('incrementAttributeValues', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await incrementAttributeValues(client, [{name: 'steps', value: 500, date: '2024-01-01'}]);
 
     expect(mockFetch).toHaveBeenCalledWith(

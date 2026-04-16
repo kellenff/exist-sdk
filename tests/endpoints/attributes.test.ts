@@ -1,6 +1,6 @@
 import {describe, it, expect, vi} from 'vitest';
 
-import {createClient} from '../../src/client.js';
+import {ApiTokenSchema, createClient} from '../../src/client.js';
 import {getAttributesWithValues} from '../../src/endpoints/attributes.js';
 
 describe('getAttributesWithValues', () => {
@@ -20,7 +20,10 @@ describe('getAttributesWithValues', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getAttributesWithValues(client);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -45,7 +48,10 @@ describe('getAttributesWithValues', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getAttributesWithValues(client, {
       page: 2,
       limit: 50,

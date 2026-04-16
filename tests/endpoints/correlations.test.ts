@@ -1,6 +1,6 @@
 import {describe, it, expect, vi} from 'vitest';
 
-import {createClient} from '../../src/client.js';
+import {ApiTokenSchema, createClient} from '../../src/client.js';
 import {getCorrelations, getCorrelationCombo} from '../../src/endpoints/correlations.js';
 
 describe('getCorrelations', () => {
@@ -20,7 +20,10 @@ describe('getCorrelations', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getCorrelations(client);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -45,7 +48,10 @@ describe('getCorrelations', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getCorrelations(client, {
       page: 2,
       limit: 50,
@@ -82,7 +88,10 @@ describe('getCorrelationCombo', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getCorrelationCombo(client, {
       attribute: 'mood',
       attribute2: 'sleep',

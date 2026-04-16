@@ -1,6 +1,6 @@
 import {describe, it, expect, vi} from 'vitest';
 
-import {createClient} from '../../src/client.js';
+import {ApiTokenSchema, createClient} from '../../src/client.js';
 import {getAverages} from '../../src/endpoints/averages.js';
 
 describe('getAverages', () => {
@@ -20,7 +20,10 @@ describe('getAverages', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getAverages(client);
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -45,7 +48,10 @@ describe('getAverages', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getAverages(client, {
       page: 2,
       limit: 50,
@@ -74,7 +80,10 @@ describe('getAverages', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
     await getAverages(client, {include_historical: 1});
 
     expect(mockFetch).toHaveBeenCalledWith(
