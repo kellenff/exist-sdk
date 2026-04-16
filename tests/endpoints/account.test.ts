@@ -35,6 +35,6 @@ describe('getProfile', () => {
       }),
     );
     expect(result.ok).toBe(true);
-    expect(result.data).toEqual(mockProfile);
+    expect(result).toMatchObject({ok: true, data: mockProfile});
   });
 });
