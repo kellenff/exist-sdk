@@ -13,6 +13,7 @@ export type {
   CreateAttributeItem,
   AttributeValueUpdate,
   AttributeIncrement,
+  Result,
 } from './types.js';
 export {getProfile} from './endpoints/account.js';
 export {getAttributesWithValues} from './endpoints/attributes.js';

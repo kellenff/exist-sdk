@@ -19,7 +19,7 @@ export const ApiTokenSchema = z.string().brand<'ApiToken'>();
 export const UserTokenSchema = z.string().brand<'UserToken'>();
 
 export interface ClientOptions {
-  token: string;
+  token: ApiToken;
   authScheme?: 'Bearer' | 'Token';
   baseUrl?: string;
   fetch?: typeof fetch;
