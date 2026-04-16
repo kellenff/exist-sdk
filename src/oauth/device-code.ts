@@ -15,7 +15,7 @@ import {
 import type {ExistClient} from '../client.js';
 import type {TokenStore} from './token-store.js';
 
-import {createClient} from '../client.js';
+import {ApiTokenSchema, createClient} from '../client.js';
 
 export interface DeviceCodeClientOptions {
   clientId: string;
@@ -97,7 +97,7 @@ export function createDeviceCodeClient(opts: DeviceCodeClientOptions): DeviceCod
       const store = clientOpts?.tokenStore ?? tokenStore;
       const token = clientOpts?.token ?? store.getAccessToken();
       return createClient({
-        token: token!,
+        token: ApiTokenSchema.parse(token!),
         authScheme: 'Bearer',
       });
     },

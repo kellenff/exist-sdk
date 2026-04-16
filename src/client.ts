@@ -8,12 +8,8 @@ export interface ExistError {
 }
 
 // Branded types for token safety
-export type ApiToken = z.infer<typeof ApiTokenSchema> & {
-  readonly __brand: 'ApiToken';
-};
-export type UserToken = z.infer<typeof UserTokenSchema> & {
-  readonly __brand: 'UserToken';
-};
+export type ApiToken = z.infer<typeof ApiTokenSchema>;
+export type UserToken = z.infer<typeof UserTokenSchema>;
 
 export const ApiTokenSchema = z.string().brand<'ApiToken'>();
 export const UserTokenSchema = z.string().brand<'UserToken'>();

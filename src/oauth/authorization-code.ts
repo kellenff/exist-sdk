@@ -17,6 +17,7 @@ import {
 import type {ExistClient} from '../client.js';
 import type {TokenStore} from './token-store.js';
 
+import {ApiTokenSchema} from '../client.js';
 import {createClient} from '../client.js';
 
 export interface AuthorizationCodeClientOptions {
@@ -114,7 +115,7 @@ export function createAuthorizationCodeClient(
       const store = clientOpts?.tokenStore ?? tokenStore;
       const token = clientOpts?.token ?? store.getAccessToken();
       return createClient({
-        token: token!,
+        token: ApiTokenSchema.parse(token!),
         authScheme: 'Bearer',
       });
     },
