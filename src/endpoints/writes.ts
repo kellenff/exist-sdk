@@ -1,26 +1,8 @@
 import {z} from 'zod';
 
 import type {ExistClient} from '../client.js';
-import type {ExistError} from '../client.js';
-import type {
-  AcquireOrReleaseItem,
-  CreateAttributeItem,
-  AttributeValueUpdate,
-  AttributeIncrement,
-} from '../types.js';
 
-function validate<T>(schema: z.ZodSchema<T>, data: unknown, errorMessage: string): T {
-  const result = schema.safeParse(data);
-  if (!result.success) {
-    const err: ExistError = {
-      status: 0,
-      message: errorMessage,
-      cause: result.error.issues,
-    };
-    throw err;
-  }
-  return result.data;
-}
+import {validate} from './_shared.js';
 
 const AcquireOrReleaseItemSchema = z.object({
   template: z.string().optional(),
@@ -49,6 +31,11 @@ const AttributeIncrementSchema = z.object({
     .regex(/^\d{4}-\d{2}-\d{2}$/)
     .optional(),
 });
+
+export type AcquireOrReleaseItem = z.infer<typeof AcquireOrReleaseItemSchema>;
+export type CreateAttributeItem = z.infer<typeof CreateAttributeItemSchema>;
+export type AttributeValueUpdate = z.infer<typeof AttributeValueUpdateSchema>;
+export type AttributeIncrement = z.infer<typeof AttributeIncrementSchema>;
 
 export async function acquireAttributes(
   client: ExistClient,

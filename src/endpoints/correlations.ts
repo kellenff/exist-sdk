@@ -1,39 +1,21 @@
 import {z} from 'zod';
 
 import type {ExistClient} from '../client.js';
-import type {ExistError} from '../client.js';
-import type {PagedCorrelations, Correlation} from '../types.js';
+import type {Result} from '../types.js';
 
-interface GetCorrelationsParams {
-  page?: number;
-  limit?: number;
-  confident?: 0 | 1;
-  attribute?: string;
-}
+import {buildQuery, validate} from './_shared.js';
 
-interface GetCorrelationComboParams {
-  attribute: string;
-  attribute2: string;
-}
+const GetCorrelationsParamsSchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  confident: z.union([z.literal(0), z.literal(1)]).optional(),
+  attribute: z.string().optional(),
+});
 
-function buildQuery(params: object): string {
-  const entries = Object.entries(params).filter(([, v]) => v !== undefined);
-  if (entries.length === 0) return '';
-  return '?' + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join('&');
-}
-
-function validate<T>(schema: z.ZodSchema<T>, data: unknown, errorMessage: string): T {
-  const result = schema.safeParse(data);
-  if (!result.success) {
-    const err: ExistError = {
-      status: 0,
-      message: errorMessage,
-      cause: result.error.issues,
-    };
-    throw err;
-  }
-  return result.data;
-}
+const GetCorrelationComboParamsSchema = z.object({
+  attribute: z.string(),
+  attribute2: z.string(),
+});
 
 const PagedCorrelationsSchema = z.object({
   count: z.number(),
@@ -54,24 +36,25 @@ const CorrelationSchema = z.object({
   stars: z.number().nullable(),
 });
 
+type PagedCorrelations = z.infer<typeof PagedCorrelationsSchema>;
+type Correlation = z.infer<typeof CorrelationSchema>;
+
 export async function getCorrelations(
   client: ExistClient,
-  params: GetCorrelationsParams = {},
-): Promise<PagedCorrelations> {
+  params: z.infer<typeof GetCorrelationsParamsSchema> = {},
+): Promise<Result<PagedCorrelations>> {
   const qs = buildQuery(params);
   const data = await client.get(`/correlations/${qs}`);
-  return validate(
-    PagedCorrelationsSchema,
-    data,
-    'Invalid PagedCorrelations response',
-  ) as PagedCorrelations;
+  const validated = validate(PagedCorrelationsSchema, data, 'Invalid PagedCorrelations response');
+  return {ok: true, data: validated};
 }
 
 export async function getCorrelationCombo(
   client: ExistClient,
-  params: GetCorrelationComboParams,
-): Promise<Correlation> {
+  params: z.infer<typeof GetCorrelationComboParamsSchema>,
+): Promise<Result<Correlation>> {
   const qs = buildQuery(params);
   const data = await client.get(`/correlations/combo/${qs}`);
-  return validate(CorrelationSchema, data, 'Invalid Correlation response') as Correlation;
+  const validated = validate(CorrelationSchema, data, 'Invalid Correlation response');
+  return {ok: true, data: validated};
 }

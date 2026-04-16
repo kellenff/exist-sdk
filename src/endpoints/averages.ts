@@ -1,34 +1,18 @@
 import {z} from 'zod';
 
 import type {ExistClient} from '../client.js';
-import type {ExistError} from '../client.js';
-import type {PagedAverages} from '../types.js';
+import type {Result} from '../types.js';
 
-interface GetAveragesParams {
-  page?: number;
-  limit?: number;
-  attributes?: string;
-  include_historical?: 0 | 1;
-}
+import {buildQuery, validate} from './_shared.js';
 
-function buildQuery(params: GetAveragesParams): string {
-  const entries = Object.entries(params).filter(([, v]) => v !== undefined);
-  if (entries.length === 0) return '';
-  return '?' + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join('&');
-}
+const GetAveragesParamsSchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  attributes: z.string().optional(),
+  include_historical: z.union([z.literal(0), z.literal(1)]).optional(),
+});
 
-function validate<T>(schema: z.ZodSchema<T>, data: unknown, errorMessage: string): T {
-  const result = schema.safeParse(data);
-  if (!result.success) {
-    const err: ExistError = {
-      status: 0,
-      message: errorMessage,
-      cause: result.error.issues,
-    };
-    throw err;
-  }
-  return result.data;
-}
+type GetAveragesParams = z.infer<typeof GetAveragesParamsSchema>;
 
 const PagedAveragesSchema = z.object({
   count: z.number(),
@@ -37,11 +21,14 @@ const PagedAveragesSchema = z.object({
   results: z.array(z.unknown()),
 });
 
+type PagedAverages = z.infer<typeof PagedAveragesSchema>;
+
 export async function getAverages(
   client: ExistClient,
   params: GetAveragesParams = {},
-): Promise<PagedAverages> {
+): Promise<Result<PagedAverages>> {
   const qs = buildQuery(params);
   const data = await client.get(`/averages/${qs}`);
-  return validate(PagedAveragesSchema, data, 'Invalid PagedAverages response') as PagedAverages;
+  const validated = validate(PagedAveragesSchema, data, 'Invalid PagedAverages response');
+  return {ok: true, data: validated};
 }

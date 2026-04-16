@@ -1,36 +1,21 @@
 import {z} from 'zod';
 
 import type {ExistClient} from '../client.js';
-import type {ExistError} from '../client.js';
 import type {PagedAttributesWithValues} from '../types.js';
 
-interface GetAttributesParams {
-  page?: number;
-  limit?: number;
-  days?: number;
-  groups?: string;
-  date_max?: string;
-  attributes?: string;
-}
+import {ISODateSchema} from '../types.js';
+import {validate, buildQuery} from './_shared.js';
 
-function buildQuery(params: GetAttributesParams): string {
-  const entries = Object.entries(params).filter(([, v]) => v !== undefined);
-  if (entries.length === 0) return '';
-  return '?' + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join('&');
-}
+const GetAttributesParamsSchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  days: z.number().optional(),
+  groups: z.string().optional(),
+  date_max: ISODateSchema.optional(),
+  attributes: z.string().optional(),
+});
 
-function validate<T>(schema: z.ZodSchema<T>, data: unknown, errorMessage: string): T {
-  const result = schema.safeParse(data);
-  if (!result.success) {
-    const err: ExistError = {
-      status: 0,
-      message: errorMessage,
-      cause: result.error.issues,
-    };
-    throw err;
-  }
-  return result.data;
-}
+export type GetAttributesParams = z.infer<typeof GetAttributesParamsSchema>;
 
 const PagedAttributesWithValuesSchema = z.object({
   count: z.number(),

@@ -1,8 +1,9 @@
 import {z} from 'zod';
 
 import type {ExistClient} from '../client.js';
-import type {ExistError} from '../client.js';
-import type {UserProfile} from '../types.js';
+import type {Result} from '../types.js';
+
+import {validate} from './_shared.js';
 
 const UserProfileSchema = z.object({
   username: z.string(),
@@ -15,20 +16,10 @@ const UserProfileSchema = z.object({
   default_color: z.string().optional(),
 });
 
-function validate<T>(schema: z.ZodSchema<T>, data: unknown, errorMessage: string): T {
-  const result = schema.safeParse(data);
-  if (!result.success) {
-    const err: ExistError = {
-      status: 0,
-      message: errorMessage,
-      cause: result.error.issues,
-    };
-    throw err;
-  }
-  return result.data;
-}
+type UserProfile = z.infer<typeof UserProfileSchema>;
 
-export async function getProfile(client: ExistClient): Promise<UserProfile> {
+export async function getProfile(client: ExistClient): Promise<Result<UserProfile>> {
   const data = await client.get('/accounts/profile/');
-  return validate(UserProfileSchema, data, 'Invalid UserProfile response');
+  const validated = validate(UserProfileSchema, data, 'Invalid UserProfile response');
+  return {ok: true, data: validated};
 }
