@@ -1,118 +1,223 @@
-# exist-sdk Think Tank
+# GRFP Stage 3: Think Tank — Researching Exemplar READMEs
 
-## Exemplar SDK READMEs
+## Researched READMEs
 
-### Stripe Node.js SDK (`stripe/stripe-node`)
-- **What it does well:**
-  - Hero: big bold "The official Stripe API client" + npm badge + version
-  - One-liner pitch immediately
-  - **Installation** section — npm + yarn + PNPM
-  - **Usage** — minimal, real working code, shows API key + first call
-  - ** Documentation** link prominent
-  - **Testing** section for contributors
-  - Auto-generated from openapi — types in sync
+### Octokit.js — "The all-batteries-included GitHub SDK"
 
-- **What they avoid:** No fluff, no "we're excited to announce", no changelog dump
+**Tagline**: *"The all-batteries-included GitHub SDK for Browsers, Node.js, and Deno."*
 
-### Octokit (`octokit/octokit.js`)
-- **What it does well:**
-  - Table of contents for fast navigation
-  - Code example within first 5 lines
-  - Authentication first — show how to get a token before showing usage
-  - Pagination built-in, shown in README
-  - Links to official docs for deeper reference
+**Structure**:
+1. Tagline + brief description
+2. Table of contents (auto-generated)
+3. Features grid (6 bullets: Complete, Prescriptive, Universal, Tested, Typed, Decomposable, Extendable)
+4. Usage section with per-runtime installation (Browser, Deno, Node in a table)
+5. Constructor options
+6. Authentication section
+7. REST API, GraphQL, App client, Webhooks, OAuth sections
 
-### Supabase JS (`supabase/supabase-js`)
-- **What it does well:**
-  - Screenshotted demo on hero — immediate visual context
-  - Multiple full code examples covering different use cases
-  - Typed errors shown
-  - Clear install for multiple environments (npm, yarn, bun)
-  - Link to official docs for every endpoint detail
+**What works**:
+- Per-runtime usage table at the top — instantly answers "how do I install for Deno vs Node?"
+- Features as a crisp bullet grid — fast scanning
+- Warning/tip boxes (`[!IMPORTANT]`, `[!WARNING]`) for gotchas — surfaces important info without burying it
+- Authentication is its own major section — it's prominent, not hidden
 
-### Fauna JS (`fauna/fauna-js`)
-- **What it does well:**
-  - Code example right at top
-  - Clear auth setup
-  - Links to concepts, guides, API reference
-
-### AWS SDK for JavaScript (`aws/aws-sdk-js`)
-- **What it does well:**
-  - Terse, utilitarian
-  - Multiple service examples
-  - Clear contribution guidelines
+**What to steal**:
+- Runtime-specific installation table
+- Features as a 6-bullet grid
+- `<!-- omit in toc -->` comment trick for selective TOC inclusion
 
 ---
 
-## Common Patterns
+### Stripe Node Library — "The Stripe Node.js Library"
 
-### Structure (all exemplars follow this order)
-1. **Badge bar** — npm version, build status, license
-2. **One-line pitch** — what it IS (not a description)
-3. **Installation** — npm/yarn/pnpm one-liners
-4. **Quick Start** — complete working code, auth + first call
-5. **Detailed Examples** — common operations
-6. **Authentication** — explicit section, how to get credentials
-7. **TypeScript-specific** — type exports shown, generics referenced
-8. **Error handling** — typed errors shown
-9. **Link to full docs** — README is a teaser, not the docs
-10. **Contributing** — small, links to separate CONTRIBUTING.md
+**Tagline**: None — leads with what it does directly
 
-### What ALL avoid
-- Screenshots of the product UI (README is about code, not UI)
-- History/changelog dumps in README (separate CHANGELOG.md)
-- "We hope you love it" pleasantries
-- Large blocks of explanatory prose — code speaks
-- Incomplete examples that don't run
-- Showing every single method — just the common ones
+**Structure**:
+1. Badges (version, build, downloads)
+2. Tip box (Discord community)
+3. One-liner description
+4. Link to full docs
+5. Requirements section (explicit: Node 18+)
+6. Installation
+7. Usage code example
+8. TypeScript section (separate, detailed)
+9. Expand patterns section
+10. Error handling section
 
-### Code example rules
-- Use real, working code (no pseudocode)
-- Show auth setup before usage
-- Show one complete operation, not a soup of all features
-- Typed error handling shown when available
+**What works**:
+- `Requirements` section is explicit — no guessing
+- Tip and Warning boxes surface important info contextually
+- Separates "basic usage" from "TypeScript-specific" concerns cleanly
+- The `[!WARNING]` box about lazy instantiation is a great pattern — shows real engineering empathy
+
+**What to steal**:
+- Explicit requirements section
+- Warning boxes for important gotchas
+- Separate TypeScript section for TS-specific patterns
 
 ---
 
-## Application to exist-sdk README
+### Hono — "The edge Framework"
 
-### Current README problems (from deep-dive)
-1. `client.attributes.list()` — method doesn't exist
-2. `new ExistClient()` — should be `createClient(opts)`
-3. No authentication section — how to get a token?
-4. Alpha warning buried after installation
-5. No error handling example
-6. No contribution/contributing section
+**Tagline**: *"Ultrafast web framework for the Edges"*
 
-### What the README should borrow
+**Structure**:
+1. Visual logo
+2. Benchmarks (context: it's a performance-focused framework)
+3. Features row (3-4 items)
+4. Who it's for section
+5. Quick start code
+6. Detail sections
 
-From Stripe:
-- Badge bar (npm, JSR, license)
-- Working code at top showing full auth + one API call
-- TypeScript types shown explicitly (`import type {UserProfile}`)
+**What works**:
+- Benchmarks for credibility (when relevant)
+- "Who it's for" — audience clarity
+- Minimal TOC, quick start comes fast
+- Clean, typographic visual style
 
-From Octokit:
-- Table of contents for nav
-- Auth-first — show `exchangeSimpleToken()` or token setup before anything
+**What to steal**:
+- "Who it's for" section — sharp audience definition
+- Benchmarks if relevant (exist-sdk is fast too — pure functions, no overhead)
 
-From Supabase:
-- Multiple examples (profile, attributes, write operation)
-- Typed errors shown (`ExistError`)
+---
 
-### Minimum viable README structure
+### openapi-typescript — Same ecosystem, adjacent project
+
+**Structure**:
+1. Project description
+2. Package cards (two packages with visual logos)
+3. Sponsors section
+4. Contributing guides
+
+**What works**:
+- Package cards show multi-package architecture cleanly
+- Sponsor acknowledgment is prominent — community goodwill
+- Contributing guides are linked, not inline
+
+**What to steal**:
+- If we add sub-packages (exist-sdk + exist-hooks, etc.), use the package card layout
+- Link to contributing guide rather than duplicating it
+
+---
+
+### Zod (from knowledge)
+
+**Tagline**: *"TypeScript-first schema validation with compile-time and runtime type inference"*
+
+**Structure**:
+1. Tagline + core problem solved
+2. Comparison table (vs alternatives: joi, io-ts, ajv)
+3. Features list
+4. Installation
+5. Quick start
+6. Deep-dive sections by feature
+
+**What works**:
+- Comparison table immediately differentiates from alternatives
+- Features are a scan-friendly list with brief descriptions
+- Code examples are real (not toy examples)
+
+**What to steal**:
+- Comparison table — if exist-sdk has clear advantages over "just use fetch", show it
+- Feature bullets with brief descriptions, not just names
+
+---
+
+## Cross-Cutting Patterns
+
+### The Anatomy of a Great SDK README
+
 ```
-1. Badge bar
-2. One-liner pitch
-3. Installation (npm + JSR)
-4. Quick Start — full working code with token exchange
-5. Examples — profile + attributes + write op
-6. Authentication — explain how to get token
-7. API Reference link
-8. Contributing link
+1. TAGLINE (one line, evocative)
+2. BADGES (version, npm, build, type definitions)
+3. ONE-LINER (what it does, no fluff)
+4. FEATURE GRID (3-6 bullets, scannable)
+5. QUICK START (3-7 lines, in media res)
+6. INSTALLATION (per-runtime if applicable)
+7. USAGE EXAMPLES (by concern, not by endpoint)
+8. DEEP SECTIONS (auth, error handling, advanced)
+9. CONTRIBUTING / LICENSE
 ```
 
-### What to NOT include
-- Don't show non-existent API methods
-- Don't show class syntax for factory function
-- Don't bury alpha warning — own it at top
-- Don't list every endpoint — just the working ones
+### The Per-Runtime Table Pattern
+
+Octokit handles multi-runtime by showing all three in one table:
+
+```markdown
+| Environment | Import from |
+|-------------|-------------|
+| Browser     | esm.sh      |
+| Deno        | esm.sh      |
+| Node        | npm         |
+```
+
+exist-sdk should do the same: npm / JSR / Bun in a table.
+
+### Warning/Tip Boxes
+
+```markdown
+> [!WARNING]
+> Important gotcha here
+
+> [!TIP]
+> Pro tip for power users
+
+> [!IMPORTANT]
+> Requirement or prerequisite
+```
+
+These are GitHub-native markdown — no plugins needed.
+
+### Features Grid
+
+```markdown
+- **Complete** — Full API coverage
+- **Type-safe** — TypeScript-first with runtime validation
+- **Multi-runtime** — Node.js, Deno, Bun
+- **Secure by default** — PKCE-only OAuth2
+```
+
+Short. Scannable. Each item is a complete thought.
+
+---
+
+## What These Tell Us About exist-sdk's README
+
+### Should have
+
+1. **Tagline**: "The type-safe SDK for the quantified self" — or similar
+2. **Badges**: npm, JSR, build status, typecheck, lint
+3. **Per-runtime installation table**: npm + JSR in a table
+4. **Feature grid**: 5-6 bullets (OAuth2, Zod validation, multi-runtime, branded types, auto-generated types)
+5. **Quick start**: 5 lines — token exchange, client creation, first API call
+6. **Usage sections by concern**: Auth, reading data, writing data, error handling
+7. **Warning boxes**: For important gotchas (lazy token store, PKCE requirements)
+8. **Contributing section**: Points to CONTRIBUTING.md
+
+### Should NOT have
+
+1. **Vague roadmap** — either remove or make specific
+2. **"Status: Alpha" disclaimer** — the code quality speaks for itself; don't apologize
+3. **Comparison table vs alternatives** — unless we can find real alternatives to compare against (exist.io has no official SDK, so "vs raw fetch" is the comparison)
+4. **Lengthy architecture explanation** — save that for CLAUDE.md
+5. **Emoji in badges or section headers** — keep it clean and typographic
+
+### Potential Headline Variations
+
+| Option | Tagline |
+|--------|---------|
+| 1 | "The type-safe SDK for the quantified self" |
+| 2 | "Track everything. Build anything. With type safety." |
+| 3 | "Your exist.io data, fully typed, always validated" |
+| 4 | "The SDK that respects your data — and your users' security" |
+
+---
+
+## Key Takeaways for Brain Jam
+
+1. **The per-runtime installation table is non-negotiable** — it's the clearest way to show npm + JSR support
+2. **Warning boxes for the PKCE story** — "This SDK only supports PKCE OAuth2. No exceptions. This is intentional."
+3. **Feature grid should lead with differentiators** — not "type-safe" (everyone claims that) but "runtime-validated" and "PKCE-only"
+4. **Quick start should be 5-7 lines max** — token, client, one API call
+5. **Don't apologize for alpha** — the quality of the code (oauth4webapi, Zod, branded types) speaks for itself
+6. **Consider a "Why not just use fetch?" section** — addresses the obvious question head-on
