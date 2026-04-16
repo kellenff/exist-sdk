@@ -463,6 +463,10 @@ export type PagedAverages = components['schemas']['PagedAverages'];
 export type AverageRow = components['schemas']['AverageRow'];
 export type PagedCorrelations = components['schemas']['PagedCorrelations'];
 export type Correlation = components['schemas']['Correlation'];
+export type AcquireOrReleaseItem = components['schemas']['AcquireOrReleaseItem'];
+export type CreateAttributeItem = components['schemas']['CreateAttributeItem'];
+export type AttributeValueUpdate = components['schemas']['AttributeValueUpdate'];
+export type AttributeIncrement = components['schemas']['AttributeIncrement'];
 export interface operations {
   authSimpleToken: {
     parameters: {

@@ -18,6 +18,9 @@
     "precommit": "yarn lint && yarn format:check",
     "release": "semantic-release"
   },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/exec": "^7.1.0",

@@ -10,7 +10,13 @@ describe('getCorrelations', () => {
         Promise.resolve({
           ok: true,
           status: 200,
-          json: () => Promise.resolve({count: 0, results: []}),
+          json: () =>
+            Promise.resolve({
+              count: 0,
+              next: null,
+              previous: null,
+              results: [],
+            }),
         }) as unknown as Promise<Response>,
     );
 
@@ -29,7 +35,13 @@ describe('getCorrelations', () => {
         Promise.resolve({
           ok: true,
           status: 200,
-          json: () => Promise.resolve({count: 0, results: []}),
+          json: () =>
+            Promise.resolve({
+              count: 0,
+              next: null,
+              previous: null,
+              results: [],
+            }),
         }) as unknown as Promise<Response>,
     );
 
@@ -58,9 +70,14 @@ describe('getCorrelationCombo', () => {
           json: () =>
             Promise.resolve({
               date: '2024-01-01',
+              period: 30,
+              offset: 0,
               attribute: 'mood',
               attribute2: 'sleep',
               value: 0.75,
+              p: null,
+              percentage: null,
+              stars: null,
             }),
         }) as unknown as Promise<Response>,
     );

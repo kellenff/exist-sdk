@@ -44,7 +44,8 @@ const RAW_RUNTIME_STATE =
           ["semantic-release", "npm:25.0.3"],\
           ["tsx", "npm:4.21.0"],\
           ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"],\
-          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"]\
+          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"],\
+          ["zod", "npm:3.25.76"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -405,7 +406,8 @@ const RAW_RUNTIME_STATE =
           ["semantic-release", "npm:25.0.3"],\
           ["tsx", "npm:4.21.0"],\
           ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"],\
-          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"]\
+          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"],\
+          ["zod", "npm:3.25.76"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -6599,6 +6601,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../.yarn/berry/cache/yoctocolors-npm-2.1.2-ba5f016605-10c0.zip/node_modules/yoctocolors/",\
         "packageDependencies": [\
           ["yoctocolors", "npm:2.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["zod", [\
+      ["npm:3.25.76", {\
+        "packageLocation": "../../.yarn/berry/cache/zod-npm-3.25.76-7de26333f8-10c0.zip/node_modules/zod/",\
+        "packageDependencies": [\
+          ["zod", "npm:3.25.76"]\
         ],\
         "linkType": "HARD"\
       }]\

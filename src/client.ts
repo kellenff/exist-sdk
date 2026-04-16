@@ -1,9 +1,22 @@
+import {z} from 'zod';
+
 export interface ExistError {
   status: number;
   message: string;
   code?: string;
   cause?: unknown;
 }
+
+// Branded types for token safety
+export type ApiToken = z.infer<typeof ApiTokenSchema> & {
+  readonly __brand: 'ApiToken';
+};
+export type UserToken = z.infer<typeof UserTokenSchema> & {
+  readonly __brand: 'UserToken';
+};
+
+export const ApiTokenSchema = z.string().brand<'ApiToken'>();
+export const UserTokenSchema = z.string().brand<'UserToken'>();
 
 export interface ClientOptions {
   token: string;

@@ -10,7 +10,13 @@ describe('getAverages', () => {
         Promise.resolve({
           ok: true,
           status: 200,
-          json: () => Promise.resolve({count: 0, results: []}),
+          json: () =>
+            Promise.resolve({
+              count: 0,
+              next: null,
+              previous: null,
+              results: [],
+            }),
         }) as unknown as Promise<Response>,
     );
 
@@ -29,7 +35,13 @@ describe('getAverages', () => {
         Promise.resolve({
           ok: true,
           status: 200,
-          json: () => Promise.resolve({count: 0, results: []}),
+          json: () =>
+            Promise.resolve({
+              count: 0,
+              next: null,
+              previous: null,
+              results: [],
+            }),
         }) as unknown as Promise<Response>,
     );
 
@@ -52,7 +64,13 @@ describe('getAverages', () => {
         Promise.resolve({
           ok: true,
           status: 200,
-          json: () => Promise.resolve({count: 0, results: []}),
+          json: () =>
+            Promise.resolve({
+              count: 0,
+              next: null,
+              previous: null,
+              results: [],
+            }),
         }) as unknown as Promise<Response>,
     );
 

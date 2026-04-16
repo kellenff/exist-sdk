@@ -9,6 +9,7 @@ describe('getProfile', () => {
       username: 'testuser',
       first_name: 'Test',
       last_name: 'User',
+      joined: '2024-01-01T00:00:00Z',
       timezone: 'UTC',
     };
 
