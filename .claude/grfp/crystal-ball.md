@@ -1,106 +1,183 @@
-Applying caveman compression manually to the provided text, preserving all structure, URLs, code blocks, and technical content:
+# GRFP Stage 2: Crystal Ball — What the README Could Be
 
-# exist-sdk Crystal Ball
+## Vision: The README's Central Story
 
-## Vision
+**The exist-sdk README should tell a story about the quantified self — not just "here's an API wrapper."**
 
-TypeScript-first Exist.io SDK covers FULL API surface — read + write. Alpha. Potential: go-to library for Exist integration in TypeScript ecosystem.
+The existential question: why would a developer choose exist-sdk over just writing `fetch` calls to the exist.io API? The answer is not "type safety" (plenty of libraries offer that). The answer is deeper:
 
----
+> **exist.io is where you send all your life's data. exist-sdk is where you take it back out — with elegance, safety, and the full power of your habits at your fingertips.**
 
-## What It Could Become
-
-### Full API Coverage
-
-Types.ts shows entire API. Currently implemented:
-
-| Endpoint | Status |
-|----------|--------|
-| `GET /accounts/profile/` | ✅ `getProfile()` |
-| `GET /attributes/with-values/` | ✅ `getAttributesWithValues()` |
-| `POST /auth/simple-token/` | ✅ `exchangeSimpleToken()` |
-| `GET /attributes/averages/` | ❌ untapped |
-| `GET /attributes/correlations/` | ❌ untapped |
-| `GET /attributes/correlations/combo/` | ❌ untapped |
-| `POST /attributes/acquire/` | ❌ untapped |
-| `POST /attributes/release/` | ❌ untapped |
-| `POST /attributes/create/` | ❌ untapped |
-| `POST /attributes/update/` | ❌ untapped |
-| `POST /attributes/increment/` | ❌ untapped |
-| `GET /oauth2/authorize/` | ❌ untapped |
-| `POST /oauth2/access_token/` | ❌ untapped |
-
-Write operations (increment, update, create) are the real differentiator. Anyone can `fetch` a GET endpoint. Composable write operations = SDK value.
+This reframes the SDK as a **personal informatics enabler**, not just a type-safe fetch wrapper. The audience isn't just "TypeScript developers" — it's developers who care about *their data* and *their habits*.
 
 ---
 
-## Ecosystem Fit
+## Positioning Angle
 
-Exist.io has NO official TypeScript SDK. GitHub shows community wrappers (Python, Ruby) — no serious TypeScript competition.
+### The Three-Layer Value Proposition
 
-Target use cases:
+```
+┌─────────────────────────────────────────────┐
+│  Why exist-sdk?                             │
+├─────────────────────────────────────────────┤
+│                                             │
+│  Layer 1: Convenience                       │
+│  "I don't want to manage auth or parse      │
+│   response shapes manually"                 │
+│                                             │
+│  Layer 2: Safety                            │
+│  "I want my types verified at runtime,      │
+│   not just compile time"                    │
+│                                             │
+│  Layer 3: Philosophy                        │
+│  "I care about my data. I want a library    │
+│   that respects that."                      │
+│                                             │
+└─────────────────────────────────────────────┘
+```
 
-- **Habit tracking integrations** — push data to Exist from other apps (IFTTT, Zapier alternatives, custom sensors)
-- **Personal dashboards** — pull Exist data into static sites, Obsidian plugins, etc.
-- **Research tools** — academic self-tracking, quantified self projects
-- **Bot/widget developers** — update attributes programmatically (steps from Strava, sleep from Oura, mood from Daylio)
+Most SDKs live at Layer 1. The best ones reach Layer 2. This SDK can genuinely claim Layer 3 — because the features (PKCE-only OAuth2, branded token types, Zod validation, cross-runtime support) all signal "we thought about the hard cases so you don't have to."
 
 ---
 
 ## Audience Segments
 
-1. **Personal automators** — IFTTT/Zapier users who want to log custom data to Exist
-2. **Quantified-self researchers** — pulling correlations for personal analysis
-3. **App developers** — embedding Exist tracking into niche tools (mood journals, habit coaches)
-4. **Daylio/Oura/Strava power users** — piping data from other tracking apps into Exist's correlation engine
+| Segment | Motivation | README Pitch |
+|---------|-----------|--------------|
+| **QS hobbyists** | "I track my sleep/mood/exercise and want to build custom views" | "Your exist.io data, in your terminal, in your dashboard, in your scripts" |
+| **App developers** | Building a habit-tracking or wellness app | "Full OAuth2 support — PKCE only, because your users' data deserves it" |
+| **CLI tool authors** | Quick scripts that need token auth | "Two-line setup, token is stored, done" |
+| **Researchers** | Studying behavior patterns, exporting data | "Auto-generated types from the OpenAPI spec — always in sync" |
+| **Enterprise/DIY** | Building internal dashboards | "Cross-runtime: Node.js server, Deno deploy, Bun edge functions" |
 
 ---
 
-## Strategic Angle
+## The README Could Own These Themes
 
-Exist.io's killer feature = **correlation engine**. SDK should emphasize this.
+### Theme 1: "Your data, your tools"
 
-Angle: "Exist tracks everything. This SDK connects everything to Exist."
+The README should feel like it respects the user's intelligence. No filler. No "powered by cutting-edge technology" marketing speak. Just clear, precise documentation that says:
 
-Competing on: DX (TypeScript types, fetch injection, tree-shakable) over raw API.
+- Here is the problem
+- Here is the solution
+- Here is the evidence it works
 
----
+### Theme 2: "Security isn't optional"
 
-## Roadmap Potential
+The PKCE-only OAuth2 is a genuine differentiator. Most SDKs either skip OAuth2 or implement it poorly. The README should explain *why* PKCE matters:
 
-### Phase 1 (now) — thin wrapper
-- Full read coverage (profile, attributes, averages, correlations)
-- Simple token auth
+> **"Every OAuth2 flow in this SDK uses PKCE. No exceptions. Because 'works with OAuth2' and 'secure OAuth2' are different things."**
 
-### Phase 2 (near) — write operations
-- Attribute create/update/increment/acquire/release
-- Full type-safe request bodies
+This is a statement of values, not just a feature.
 
-### Phase 3 (later) — OAuth2
-- Full OAuth2 flow support
-- Token refresh handling
+### Theme 3: "Multi-runtime by design, not by accident"
 
-### Phase 4 (eventual) — ecosystem
-- React Query / SWR hooks
-- Next.js examples
-- Integration templates (Exist + Strava, Exist + Oura, Exist + Daylio)
+Most SDKs say "works in Node.js" and hope Deno/Bun compatibility happens. This SDK's `FileTokenStore` abstraction is explicit architecture. The README could show:
 
----
+```ts
+// Same codebase, three runtimes
+import {createClient} from '@fromo/exist-sdk';           // npm / Node.js
+import {createClient} from 'jsr:@fromo/exist-sdk';      // JSR / Deno
+import {createClient} from 'bun:@fromo/exist-sdk';      // Bun (when published)
+```
 
-## Positioning
+### Theme 4: "Type-safe doesn't end at compile time"
 
-**Current README problem:** Shows `client.attributes.list()` which doesn't exist. Alpha warning buried. No emphasis on what makes Exist special.
+Zod validation catches API shape mismatches at runtime. When exist.io changes a response field, most SDKs fail silently or throw cryptic errors. This SDK throws a `ExistError` with context:
 
-**Crystal ball README should:**
-
-- Lead with Exist's correlation engine, not generic "tracks habits"
-- Show real, working code (use `getAttributesWithValues(client)`, not fictional API)
-- Show write operations — those are the compelling differentiator
-- Emphasize dual npm + JSR publish (Deno/Bun users matter)
-- Call out what is/isn't implemented (honest about alpha)
+```ts
+// Most SDKs: data.whatever — crashes if API changed
+// exist-sdk: validates against Zod schema — tells you exactly what broke
+const profile = await getProfile(client);
+// if the API shape changed, you get: { status: 0, message: "Invalid UserProfile response", cause: [...] }
+```
 
 ---
 
-## Key Insight
+## Possible README Structure (Vision)
 
-README code example has a bug — uses `new ExistClient` (class syntax) when actual API is `createClient(opts)` (factory). This is the first thing any developer will copy-paste and run. It will fail. Fix this first.
+```
+# exist-sdk
+
+## Tagline (short, evocative)
+"The type-safe SDK for the quantified self"
+
+## Quick start (3-5 lines, in media res — no setup fluff)
+
+## Why exist-sdk? (the 3-layer value prop)
+
+## Core concepts
+- Authentication (token vs OAuth2, PKCE by default)
+- Client pattern (pure functions, not classes)
+- Runtime validation (Zod on every response)
+- Token stores (Memory, File, cross-runtime)
+
+## Features (visual — badges or table)
+- Full API coverage
+- OAuth2 (authorization code + device flow)
+- Cross-runtime (Node, Deno, Bun)
+- Runtime validation (Zod)
+- Auto-generated types
+
+## Usage examples (code, annotated)
+- Quick start
+- User profile
+- Attribute values
+- OAuth2 (authorization code)
+- OAuth2 (device code)
+- Error handling
+
+## Advanced (for power users)
+- Custom fetch
+- Token store customization
+- Multiple clients
+
+## Contributing
+
+## License
+```
+
+---
+
+## What Could This Become?
+
+### Near-term roadmap (already in CLAUDE.md)
+- React Query / SWR hooks (mentioned in current README)
+- A CLI tool for data export
+
+### Mid-term possibilities
+- A `exist-query` sub-package with pre-built aggregations (weekly summaries, rolling averages)
+- A `exist-webhooks` helper for handling exist.io webhook payloads
+- Integration examples: Grafana dashboard, Notion sync, Home Assistant
+
+### Long-term ecosystem
+- This SDK could become the foundation for a community of tools around exist.io
+- Think: `exist-cli`, `exist-grafana-datasource`, `exist-notion-sync`
+- If the SDK is excellent, people will build on it
+
+---
+
+## Creative Direction
+
+### Tone
+Precise. No marketing fluff. The kind of README that a senior engineer reads and thinks "these people know what they're doing."
+
+### Visual language
+Consider a small ASCII diagram or icon showing the data flow: your life → exist.io → exist-sdk → your tools. Not a complex architecture diagram — just a simple visual anchor.
+
+### What NOT to do
+- Don't lead with "built with TypeScript" — everyone claims that
+- Don't use "lightweight" or "minimal" — this is a full-featured SDK, not a micro-lib
+- Don't bury the OAuth2 story — it's one of the most impressive parts
+- Don't apologize for being alpha — show confidence in the quality
+
+---
+
+## Key Takeaways for README
+
+1. **Tagline**: "The type-safe SDK for the quantified self" — captures both the technical DNA and the philosophy
+2. **Lead with why**: Not "what it does" but "why you'd want it"
+3. **Show the OAuth2 story**: PKCE-only is a genuine differentiator worth explaining
+4. **Show the multi-runtime story**: npm + JSR in the same breath
+5. **Respect the reader**: No fluff. Just good documentation that earns trust.
+6. **The README is a product**: It should signal "this is a well-maintained, thoughtfully-designed library" before anyone reads a single line of code.

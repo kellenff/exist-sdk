@@ -1,6 +1,6 @@
 import {describe, it, expect, vi} from 'vitest';
 
-import {createClient} from '../src/client.js';
+import {ApiTokenSchema, createClient} from '../src/client.js';
 
 describe('createClient', () => {
   it('injects Authorization header with Token prefix', async () => {
@@ -13,7 +13,10 @@ describe('createClient', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc123', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc123'),
+      fetch: mockFetch,
+    });
     await client.get('/accounts/profile/');
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -36,7 +39,10 @@ describe('createClient', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'bad', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('bad'),
+      fetch: mockFetch,
+    });
 
     await expect(client.get('/accounts/profile/')).rejects.toMatchObject({
       status: 401,
@@ -54,7 +60,10 @@ describe('createClient', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({
+      token: ApiTokenSchema.parse('abc'),
+      fetch: mockFetch,
+    });
 
     await expect(client.get('/accounts/profile/')).rejects.toMatchObject({
       status: 429,
@@ -73,7 +82,7 @@ describe('createClient', () => {
     );
 
     const client = createClient({
-      token: 'abc',
+      token: ApiTokenSchema.parse('abc'),
       baseUrl: 'https://custom.example.com/api/2/',
       fetch: mockFetch,
     });
@@ -95,7 +104,7 @@ describe('createClient', () => {
         }) as unknown as Promise<Response>,
     );
 
-    const client = createClient({token: 'abc', fetch: mockFetch});
+    const client = createClient({token: ApiTokenSchema.parse('abc'), fetch: mockFetch});
     await client.post('/auth/simple-token/', {
       body: {username: 'user', password: 'pass'},
     });

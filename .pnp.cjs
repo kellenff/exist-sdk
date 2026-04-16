@@ -36,6 +36,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:06054c7e7bf89d0d1d29b247bd92c9b02ff0be35c4e22660b7589d600371dbdb36677c04dd8a7a7c9eaebb42545a9e49b291830179b6aac10b072a1662d6e544#npm:14.1.0"],\
           ["@types/node", "npm:25.6.0"],\
           ["husky", "npm:9.1.7"],\
+          ["oauth4webapi", "npm:3.8.5"],\
           ["openapi-typescript", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:7.13.0"],\
           ["oxfmt", "npm:0.44.0"],\
           ["oxlint", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:1.59.0"],\
@@ -43,7 +44,8 @@ const RAW_RUNTIME_STATE =
           ["semantic-release", "npm:25.0.3"],\
           ["tsx", "npm:4.21.0"],\
           ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"],\
-          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"]\
+          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"],\
+          ["zod", "npm:3.25.76"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -396,6 +398,7 @@ const RAW_RUNTIME_STATE =
           ["@semantic-release/release-notes-generator", "virtual:06054c7e7bf89d0d1d29b247bd92c9b02ff0be35c4e22660b7589d600371dbdb36677c04dd8a7a7c9eaebb42545a9e49b291830179b6aac10b072a1662d6e544#npm:14.1.0"],\
           ["@types/node", "npm:25.6.0"],\
           ["husky", "npm:9.1.7"],\
+          ["oauth4webapi", "npm:3.8.5"],\
           ["openapi-typescript", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:7.13.0"],\
           ["oxfmt", "npm:0.44.0"],\
           ["oxlint", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:1.59.0"],\
@@ -403,7 +406,8 @@ const RAW_RUNTIME_STATE =
           ["semantic-release", "npm:25.0.3"],\
           ["tsx", "npm:4.21.0"],\
           ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"],\
-          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"]\
+          ["vitest", "virtual:4fa33314c0ac498429ca1ca67753aba4b876e14615b42c95695ce92c5f1d2d68f5a78ce9b395a36a8c58ad3dc3ae951501f24d73518cf70af3ed693b91150730#npm:4.1.4"],\
+          ["zod", "npm:3.25.76"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -4642,6 +4646,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["oauth4webapi", [\
+      ["npm:3.8.5", {\
+        "packageLocation": "../../.yarn/berry/cache/oauth4webapi-npm-3.8.5-bf0acc7b7b-10c0.zip/node_modules/oauth4webapi/",\
+        "packageDependencies": [\
+          ["oauth4webapi", "npm:3.8.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["object-assign", [\
       ["npm:4.1.1", {\
         "packageLocation": "../../.yarn/berry/cache/object-assign-npm-4.1.1-1004ad6dec-10c0.zip/node_modules/object-assign/",\
@@ -6588,6 +6601,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../.yarn/berry/cache/yoctocolors-npm-2.1.2-ba5f016605-10c0.zip/node_modules/yoctocolors/",\
         "packageDependencies": [\
           ["yoctocolors", "npm:2.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["zod", [\
+      ["npm:3.25.76", {\
+        "packageLocation": "../../.yarn/berry/cache/zod-npm-3.25.76-7de26333f8-10c0.zip/node_modules/zod/",\
+        "packageDependencies": [\
+          ["zod", "npm:3.25.76"]\
         ],\
         "linkType": "HARD"\
       }]\

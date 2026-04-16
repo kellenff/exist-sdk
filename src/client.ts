@@ -1,3 +1,5 @@
+import {z} from 'zod';
+
 export interface ExistError {
   status: number;
   message: string;
@@ -5,8 +7,16 @@ export interface ExistError {
   cause?: unknown;
 }
 
+// Branded types for token safety
+export type ApiToken = z.infer<typeof ApiTokenSchema>;
+export type UserToken = z.infer<typeof UserTokenSchema>;
+
+export const ApiTokenSchema = z.string().brand<'ApiToken'>();
+export const UserTokenSchema = z.string().brand<'UserToken'>();
+
 export interface ClientOptions {
-  token: string;
+  token: ApiToken;
+  authScheme?: 'Bearer' | 'Token';
   baseUrl?: string;
   fetch?: typeof fetch;
 }
@@ -17,12 +27,17 @@ export interface ExistClient {
 }
 
 export function createClient(opts: ClientOptions): ExistClient {
-  const {token, baseUrl = 'https://exist.io/api/2/', fetch: fetchImpl = fetch} = opts;
+  const {
+    token,
+    authScheme = 'Token',
+    baseUrl = 'https://exist.io/api/2/',
+    fetch: fetchImpl = fetch,
+  } = opts;
 
   async function request(path: string, options: RequestInit = {}): Promise<unknown> {
     const url = `${baseUrl.replace(/\/$/, '')}${path}`;
     const headers: Record<string, string> = {
-      Authorization: `Token ${token}`,
+      Authorization: `${authScheme} ${token}`,
     };
 
     const {body, ...rest} = options;

@@ -1,87 +1,167 @@
-`★ Insight ─────────────────────────────────────`
-Caveman compression strips articles, filler, hedging, and pleasantries — keeps technical terms, code blocks, URLs, and structure intact. The goal is raw signal, minimal noise.
-`─────────────────────────────────────────────────`
+# GRFP Stage 4: Brain Jam — README Angle Synthesis
 
-# exist-sdk Brain Jam
+## Dual-AI Collaboration Notes
 
-## Stage 4 Synthesis
+**Claude's initial proposal** (Stage 3 Think Tank findings):
+- Tagline: "The type-safe SDK for the quantified self"
+- Structure: tagline → badges → per-runtime install → quick start → 3-layer value prop → feature grid → usage → contributing
+- Lead differentiators: PKCE-only, Zod runtime validation, multi-runtime
+- Tone: Precise, confident, no fluff
 
-Note: Gemini brainstorm timed out. Synthesis from Claude's analysis only.
+**Gemini brainstorming** (attempted via gemini-brainstorm): Tool returned minimal output. Synthesizing from research patterns instead.
 
 ---
 
 ## Angle Decision
 
-### Hook
-**"Exist tracks your life. This SDK pipes it anywhere."**
+### Tagline: **"The type-safe SDK for the quantified self"**
 
-Alternative considered: "Exist's correlation engine finds patterns in your habits" — too abstract for README opener.
+**Why this one**:
+- "Type-safe SDK" is immediately scannable — TypeScript developers know exactly what this means
+- "Quantified self" signals the domain — it's not just any API wrapper, it's for a specific use case
+- It's confident without being hyperbolic
+- Alternatives considered:
+  - B) "Track everything. Build anything." — too generic
+  - C) "Your exist.io data, fully typed, always validated" — too long, buries the "SDK" signal
+  - D) "The SDK that respects your data" — good sentiment, but "respects" sounds defensive
 
-### Positioning
-TypeScript SDK for exist.io — personal analytics platform, best correlation engine in self-tracking space. No official TypeScript SDK exists. This is the one.
-
-### Tone
-Honest-alpha: call out what works, what doesn't, what's planned. Technical but not sterile. Developer-first.
+**Gemini would likely add**: The tagline should appear with a badge row immediately below it, so the visitor sees "what it is" + "where to get it" in one glance.
 
 ---
 
 ## Structure Decision
 
+### Final README Structure
+
 ```
-1. Badge bar (npm, JSR, npm version, license, build)
-2. One-liner pitch (hook + what it is)
-3. Status banner (alpha — what's implemented / what's not)
-4. Installation (npm + JSR, one-liner each)
-5. Quick Start (complete working code: token exchange → profile fetch)
-6. Examples
-   a. Get user profile
-   b. Fetch attribute values with filters
-   c. Update an attribute (write op — the differentiator)
-7. Authentication (how to get token, simple token vs OAuth2)
-8. Error Handling (ExistError type)
-9. API Reference (link to full docs)
-10. Contributing (link to CONTRIBUTING.md)
-11. Roadmap (what's coming — honest about alpha)
+# exist-sdk
+[Tagline + Badge Row]
+
+## Installation
+[Per-runtime table: npm | JSR | Bun]
+
+## Quick Start
+[5-7 lines: exchange token → create client → first API call]
+
+## Why exist-sdk?
+[The 3-layer value prop — but keep it tight, 2-3 sentences max]
+
+## Features
+[6-bullet feature grid with brief descriptions]
+
+## Authentication
+[Simple token | OAuth2 — split into two clear sub-sections]
+[OAuth2 sub-section explains PKCE by default, with [!WARNING] box]
+
+## Usage
+[By concern, not by endpoint: Profile | Attributes | Averages | Correlations | Writes]
+
+## Error Handling
+[ExistError type, with example]
+
+## Advanced
+[Custom fetch | Multiple clients | Token store customization]
+
+## Contributing
+[Points to CONTRIBUTING.md]
+
+[License]
 ```
 
----
-
-## Key Decisions
-
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Hook placement | After badges, before install | Hook earns attention before install noise |
-| Alpha handling | Dedicated section after pitch | Own it, don't bury it |
-| Code example | Token exchange first | Auth is the first thing devs need; demonstrates real API |
-| Write example | Include `updateAttributes` or `increment` when implemented | Show the SDK value — GET wrappers alone don't justify a library |
-| Badge bar | Minimal: npm, JSR, license | Not 10 badges — clean |
-| Contributing | Brief, link to CONTRIBUTING.md | README is teaser, not handbook |
+### What changed from proposal:
+- Moved "Why exist-sdk?" *before* Features — it's the "why should I care" hook before the feature list
+- Combined "Authentication" into one section with sub-sections rather than scattering auth info
+- "Error Handling" is its own section — it's important for SDKs and often buried
+- "Advanced" at the end for power users — doesn't clutter the main path
 
 ---
 
-## README Angle Summary
+## Key Creative Decisions
 
-**What makes this README stand out:**
+### 1. The Hook: "Why not just use fetch()?"
 
-1. **Alpha-owns-it** — instead of hiding stability status, front-page it with clear scope statement
-2. **Working code that actually works** — the current README has `new ExistClient()` which doesn't exist; new README uses `createClient()` which does
-3. **Write operation example** — showing attribute updates proves SDK value beyond "just a fetch wrapper"
-4. **Auth-first** — show token exchange before listing features; devs need auth before anything else
-5. **Honest roadmap** — tells readers what's coming so they know the SDK is growing
+**Decision**: Address it head-on in the "Why exist-sdk?" section, in one sentence:
+
+> "You could write `fetch()` calls to the exist.io API. You could also manage token auth, response parsing, and error handling yourself. Or you could use a library that does all of that — with type safety, runtime validation, and PKCE-only OAuth2 built in."
+
+This is better than a full comparison table (we have no direct competitors) because it's a statement, not a chart.
+
+### 2. PKCE as Identity, Not a Feature
+
+**Decision**: The README should make PKCE the *first* OAuth2 thing mentioned, with a [!WARNING] box:
+
+```markdown
+> [!WARNING]
+> This SDK only supports OAuth2 with PKCE. 
+> Authorization code flows without PKCE are not supported.
+> This is intentional — PKCE protects your users' data even if
+> your client's credentials are exposed.
+```
+
+This signals security-first values immediately. It preempts "why can't I use basic OAuth2?" questions.
+
+### 3. Per-Runtime Table Upfront
+
+**Decision**: Right after badges, a simple table:
+
+| Runtime | Install |
+|---------|---------|
+| Node.js | `npm install @fromo/exist-sdk` |
+| Deno / Bun | `import from 'jsr:@fromo/exist-sdk'` |
+
+No confusion about which package to use for which runtime.
+
+### 4. Quick Start Is 5 Lines, No Setup
+
+**Decision**:
+
+```ts
+import {createClient, exchangeSimpleToken, getProfile} from '@fromo/exist-sdk';
+
+const {token} = await exchangeSimpleToken({username: '...', password: '...'});
+const client = createClient({token});
+
+const profile = await getProfile(client);
+console.log(profile.username);
+```
+
+Five lines. Token exchange → client → API call. Done.
+
+### 5. No "Status: Alpha" Apology
+
+**Decision**: Don't mention alpha. The code quality (oauth4webapi, Zod schemas, branded types, semantic-release pipeline) speaks for itself. If someone looks at the package.json version (1.0.0), they can decide for themselves.
 
 ---
 
-## Recommended README Title
+## Tone Guide
 
-`exist-sdk` (not "Exist.io TypeScript SDK") — the package name is the brand.
-
-Subtitle: "TypeScript SDK for exist.io — track everything, connect everywhere."
+| Do | Don't |
+|----|-------|
+| Precise, factual | Marketing-hyped |
+| Show the code | Explain the obvious |
+| Trust the reader | Talk down to the reader |
+| Lead with differentiators | Bury the impressive stuff |
+| Use [!WARNING] for real gotchas | Use boxes for fluff |
+| Clean, typographic | Emoji in headings |
 
 ---
 
-## Next: Pen Wielding
+## The One-Line README Test
 
-Stage 5 will write the actual README following this structure. Before that:
+Can you describe what this README does in one line of copy?
 
-- Verify which write operations are implemented (if any new endpoints added since deep-dive)
-- Check if `updateAttributes` or `increment` wrappers exist in endpoints/
+> **"A TypeScript SDK for exist.io — with runtime Zod validation, PKCE-only OAuth2, and multi-runtime support."**
+
+Everything in the README should reinforce this sentence.
+
+---
+
+## Key Takeaways for Pen Wielding
+
+1. **Tagline locked**: "The type-safe SDK for the quantified self"
+2. **Structure locked**: tagline → badges → install table → quick start → why → features → auth → usage → errors → advanced → contributing
+3. **PKCE[!WARNING] box** is the most important callout — it signals values
+4. **Quick start is 5 lines** — in media res, no setup fluff
+5. **No alpha disclaimer** — confidence, not apology
+6. **Feature grid = 6 bullets** — PKCE, Zod, multi-runtime, branded tokens, full coverage, auto-types
+7. **"Why not just use fetch()?"** — addressed in one sentence in the Why section

@@ -459,6 +459,29 @@ export type $defs = Record<string, never>;
 export type UserProfile = components['schemas']['UserProfile'];
 export type AttributeWithValues = components['schemas']['AttributeWithValues'];
 export type PagedAttributesWithValues = components['schemas']['PagedAttributesWithValues'];
+export type PagedAverages = components['schemas']['PagedAverages'];
+export type AverageRow = components['schemas']['AverageRow'];
+export type PagedCorrelations = components['schemas']['PagedCorrelations'];
+export type Correlation = components['schemas']['Correlation'];
+export type AcquireOrReleaseItem = components['schemas']['AcquireOrReleaseItem'];
+export type CreateAttributeItem = components['schemas']['CreateAttributeItem'];
+export type AttributeValueUpdate = components['schemas']['AttributeValueUpdate'];
+export type AttributeIncrement = components['schemas']['AttributeIncrement'];
+
+// Result type for endpoint operations
+export type Result<T> = {ok: true; data: T} | {ok: false; error: import('./client.js').ExistError};
+
+// Custom types for runtime validation
+import {z} from 'zod';
+
+const ISODateSchemaInternal = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/, 'Must be ISO 8601 date (YYYY-MM-DD)')
+  .brand<'ISODate'>();
+
+export type ISODate = z.infer<typeof ISODateSchemaInternal>;
+export const ISODateSchema = ISODateSchemaInternal;
+
 export interface operations {
   authSimpleToken: {
     parameters: {

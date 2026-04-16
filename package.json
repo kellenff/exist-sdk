@@ -18,6 +18,9 @@
     "precommit": "yarn lint && yarn format:check",
     "release": "semantic-release"
   },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/exec": "^7.1.0",
@@ -26,6 +29,7 @@
     "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/node": "^25.6.0",
     "husky": "^9.1.7",
+    "oauth4webapi": "^3.8.5",
     "openapi-typescript": "^7.13.0",
     "oxfmt": "^0.44.0",
     "oxlint": "^1.59.0",
